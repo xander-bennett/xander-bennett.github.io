@@ -32,7 +32,8 @@ section {
   background-color: rgb(245, 245, 245);
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
   background-color: #242424;
   color: #fff;
@@ -57,11 +58,13 @@ label {
   margin-bottom: 6px;
 }
 
-input:hover, textarea:hover {
-  border-color: #dcdfd6
+input:hover,
+textarea:hover {
+  border-color: #dcdfd6;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   border-color: orange;
 }
 
@@ -148,8 +151,7 @@ nav,
 .dark-theme .section__sub-title,
 .dark-theme .nav__link--anchor,
 .dark-theme .fa-adjust,
-.dark-theme .header__para
-{
+.dark-theme .header__para {
   color: white;
 }
 .dark-theme section {
@@ -319,7 +321,7 @@ nav {
   display: flex;
   visibility: hidden;
   z-index: -1;
-  transition: visibility 1s , z-index 1s, box-shadow 0.5s ease;
+  transition: visibility 1s, z-index 1s, box-shadow 0.5s ease;
 }
 
 .modal--open .modal {
@@ -385,6 +387,9 @@ nav {
   width: 100%;
 }
 
+.modal__language--image--phoenix {
+  height: 120%;
+}
 .modal__contact {
   background-color: #242424;
   color: white;
@@ -449,7 +454,7 @@ nav {
 }
 
 .modal__overlay--loading {
-  background-color: #242424 ;
+  background-color: #242424;
   font-size: 80px;
   z-index: -1;
 }
@@ -465,7 +470,6 @@ nav {
 .modal__overlay--visible {
   z-index: 1;
   display: flex;
-
 }
 
 .fa-spinner {
@@ -479,7 +483,6 @@ nav {
   100% {
     transform: rotate(360deg);
   }
-  
 }
 
 .modal__exit {
@@ -692,9 +695,7 @@ SHAPES
     width: 100%;
     flex-direction: column-reverse;
   }
-
 }
-
 
 /* Small phones, tablets, large smart phones */
 @media (max-width: 768px) {
