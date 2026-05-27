@@ -1,402 +1,889 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css" />
-    <script
-      src="https://kit.fontawesome.com/c8e4d183c2.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="js/index.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
-    ></script>
-    <script type="text/javascript">
-      (function () {
-        emailjs.init("iYB2CYCn4UXWbLH-T");
-      })();
-    </script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xander Bennett — Analytics Engineer</title>
+  <meta name="description" content="Analytics engineer building dbt models, semantic layers, and GTM data products. Six years across fintech and B2B SaaS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* === Tokens === */
+    :root {
+      --bg: #F5F1E8;
+      --bg-soft: #EFEADE;
+      --bg-cell: #FBF8F1;
+      --fg: #14110D;
+      --fg-soft: #4A4540;
+      --fg-muted: #807A72;
+      --border: #D9D2C0;
+      --border-soft: #E7E1D2;
+      --accent: #3E2B70;
+      --accent-soft: #6B53A8;
+      --orange: #C9651F;
+      --teal: #2F5D54;
+      --green: #5A7A3E;
 
-    <title>Xander Bennett</title>
-  </head>
-  <body>
-    <section id="landing-page" onmousemove="moveBackground(event)">
-      <nav>
-        <figure>
-          <img id="personal-logo" src="/assets/logo.svg" alt="" />
-        </figure>
-        <ul class="nav__link--list">
-          <li class="nav__link--item">
-            <a
-              href="#"
-              class="nav__link--anchor link__hover-effect link__hover-effect--black"
-              onclick="toggleModal()"
-              >About</a
-            >
-          </li>
-          <li class="nav__link--item">
-            <a
-              href="
-              #projects"
-              class="nav__link--anchor link__hover-effect link__hover-effect--black"
-              >Projects</a
-            >
-          </li>
-          <li class="nav__link--item" onclick="toggleModal()">
-            <a
-              href="#"
-              class="nav__link--anchor link__hover-effect link__hover-effect--black"
-              >Contact</a
-            >
-          </li>
-          <li class="nav__link--item click" onclick="toggleContrast()">
-            <a
-              href="#"
-              class="nav__link--anchor link__hover-effect link__hover-effect--black"
-            >
-              <i class="fas fa-adjust"></i
-            ></a>
-          </li>
-        </ul>
-      </nav>
-      <header class="header">
-        <div class="header__content">
-          <h1 class="title">Hey</h1>
-          <header class="title orange"><b> I'm Xander. </b></header>
-          <p class="header__para">
-            I'm a <b class="orange">software engineer</b> and
-            <b class="orange">data analyst</b>
-            with an obsession for crafting rich applications. If that peaks your
-            interest, we should talk more about it!
-            <br />
-            Here's a bit more
-            <b class="orange click" onclick="toggleModal()">about me</b>.
-          </p>
-          <div class="social__list">
-            <a
-              href="https://www.linkedin.com/in/xander-bennett/"
-              target="_blank"
-              class="social__link click"
-            >
-              <i class="fab fa-linkedin-in"></i
-            ></a>
-            <a
-              href="https://github.com/xander-bennett"
-              target="_blank"
-              class="social__link click"
-            >
-              <i class="fab fa-github"></i
-            ></a>
-            <a
-              href="assets/Alexander_Bennett_Resume.pdf"
-              target="_blank"
-              class="social__link click"
-            >
-              <i class="fas fa-file-pdf"></i
-            ></a>
-          </div>
-        </div>
-      </header>
-      <a href="#">
-        <button class="mail__btn click" onclick="toggleModal()">
-          <i class="fas fa-envelope"></i>
-        </button>
-      </a>
-      <a href="#projects" class="scroll">
-        <div class="scroll__icon click"></div>
-      </a>
-      <div class="modal">
-        <div class="modal__half modal__about">
-          <h3 class="modal__title modal__title--about">
-            Here's a bit about me
-          </h3>
-          <h4 class="modal__sub-title modal__subtitle--about">
-            Software Engineer
-          </h4>
-          <p class="modal__para">
-            I'm a <b class="orange">Software Engineer</b> with a deep background
-            in <b class="orange">data analytics</b> . Solving problems and
-            building applications is what I love to do.
-            <br />
-            <br />
-            As an engineer, I build applications that are
-            <b class="orange">fast, scalable, and secure</b>. As a data analyst,
-            I <b class="orange">extract value</b> from the data those
-            applications produce. Got you excited? Let's talk more about it!
-          </p>
+      --max: 1180px;
+      --gutter-y: clamp(4rem, 8vw, 7rem);
+      --radius: 6px;
+      --radius-lg: 10px;
 
-          <div class="modal__languages">
-            <figure class="modal__language">
-              <img
-                class="modal__language--image"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/HTML5_Badge.svg/240px-HTML5_Badge.svg.png"
-                alt="HTML Logo"
-              />
-              <span class="language__name">HTML</span>
-            </figure>
-            <figure class="modal__language">
-              <img
-                class="modal__language--image"
-                src="https://cdn.iconscout.com/icon/free/png-256/css-131-722685.png"
-                alt="CSS Logo"
-              />
-              <span class="language__name">CSS</span>
-            </figure>
-            <figure class="modal__language">
-              <img
-                class="modal__language--image"
-                src="assets/python.png"
-                alt="Python Logo"
-              />
-              <span class="language__name">Python</span>
-            </figure>
-            <figure class="modal__language">
-              <img
-                class="modal__language--image"
-                src="assets/elixir_logo.png"
-                alt="Elixir Logo"
-              />
-              <span class="language__name">Elixir</span>
-            </figure>
-            <figure class="modal__language">
-              <img
-                class="modal__language--image modal__language--image--phoenix"
-                src="assets/phoenix_logo.png"
-                alt="Phoenix Logo"
-              />
-              <span class="language__name">Phoenix</span>
-            </figure>
-            <figure class="modal__language">
-              <img
-                class="modal__language--image"
-                src="https://www.freeiconspng.com/uploads/network-storage-icon-14.png"
-                alt="Database Logo"
-              />
-              <span class="language__name">SQL</span>
-            </figure>
-          </div>
-        </div>
+      --sans: "IBM Plex Sans", system-ui, sans-serif;
+      --serif: "Fraunces", "Times New Roman", serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
 
-        <div class="modal__half modal__contact">
-          <i class="fas fa-times modal__exit click" onclick="toggleModal()"></i>
-          <h3 class="modal__title modal__title--contact">Let's talk</h3>
-          <h3 class="modal__sub-title modal__subtitle--contact">
-            Currently open to new opportunities
-          </h3>
-          <form onsubmit="contact(event)" id="contact__form">
-            <div class="form__item">
-              <label class="form__item--label">Name</label>
-              <input class="input" name="user_name" type="text" required />
+    /* === Reset === */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    /* === Background grain texture === */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.05 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    /* === Layout === */
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); position: relative; z-index: 1; }
+
+    /* === Nav === */
+    nav.top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(245, 241, 232, 0.82);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    nav.top .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.1rem;
+      padding-bottom: 1.1rem;
+    }
+    nav .mark {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      color: var(--fg);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    nav .mark .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+    nav .links { display: flex; gap: 1.6rem; }
+    nav .links a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--fg-soft);
+      transition: color 160ms ease;
+    }
+    nav .links a:hover { color: var(--accent); }
+    @media (max-width: 640px) { nav .links { gap: 1rem; } nav .links a { font-size: 0.72rem; } }
+    @media (max-width: 480px) { nav .links { display: none; } }
+
+    /* === Cell label (top of each section) === */
+    .cell-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .cell-label .num {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .cell-label .rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* === Section base === */
+    section { padding: var(--gutter-y) 0; position: relative; }
+    section + section { border-top: 1px solid var(--border-soft); }
+
+    /* === Hero === */
+    .hero { padding-top: clamp(3rem, 6vw, 5rem); padding-bottom: clamp(4rem, 7vw, 6rem); }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: center;
+    }
+    @media (max-width: 880px) { .hero-grid { grid-template-columns: 1fr; } }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+      margin: 0 0 1.5rem 0;
+    }
+    .hero h1 .em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+    }
+    .hero .tag {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .hero .tag::before {
+      content: "";
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .hero p.lede {
+      font-size: 1.15rem;
+      line-height: 1.55;
+      color: var(--fg-soft);
+      max-width: 38ch;
+      margin: 0 0 2rem 0;
+    }
+    .hero p.lede strong { color: var(--fg); font-weight: 500; }
+
+    .ctas { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.85rem 1.35rem;
+      border-radius: var(--radius);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      transition: all 180ms ease;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #FBF8F1;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover { background: #2C1E55; border-color: #2C1E55; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--fg);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn .arrow { transition: transform 200ms ease; }
+    .btn:hover .arrow { transform: translateX(3px); }
+
+    /* === Data cell (hero right side) === */
+    .data-cell {
+      background: var(--bg-cell);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 14px 40px -20px rgba(20, 17, 13, 0.18);
+    }
+    .data-cell .cell-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1rem;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.04em;
+    }
+    .data-cell .cell-head .path { color: var(--fg-soft); }
+    .data-cell .cell-head .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--green);
+      font-weight: 500;
+    }
+    .data-cell .cell-head .badge::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    }
+    .data-cell pre {
+      margin: 0;
+      padding: 1.1rem 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: var(--fg);
+      overflow-x: auto;
+    }
+    .tok-kw { color: var(--accent); font-weight: 500; }
+    .tok-fn { color: var(--orange); }
+    .tok-str { color: var(--teal); }
+    .tok-com { color: var(--fg-muted); font-style: italic; }
+    .tok-num { color: var(--orange); }
+
+    .cell-out {
+      border-top: 1px solid var(--border);
+      background: var(--bg-cell);
+    }
+    .cell-out-head {
+      padding: 0.55rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    table.df {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.76rem;
+    }
+    table.df th, table.df td {
+      padding: 0.5rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    table.df th {
+      color: var(--fg-muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      background: rgba(217, 210, 192, 0.18);
+    }
+    table.df td.num { font-variant-numeric: tabular-nums; }
+    table.df .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+    .pill.health { background: rgba(90, 122, 62, 0.14); color: var(--green); }
+    .pill.attn { background: rgba(201, 101, 31, 0.14); color: var(--orange); }
+    .pill.risk { background: rgba(168, 51, 51, 0.14); color: #A83333; }
+
+    /* === About === */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+    @media (max-width: 880px) { .about-grid { grid-template-columns: 1fr; } }
+    .about h2, .stack h2, .projects h2, .contact h2 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.5rem 0;
+    }
+    .about h2 .em, .projects h2 .em { font-style: italic; color: var(--accent); font-weight: 400; }
+    .about-body p {
+      font-size: 1.05rem;
+      color: var(--fg-soft);
+      line-height: 1.7;
+      margin: 0 0 1rem 0;
+    }
+    .about-body p strong { color: var(--fg); font-weight: 500; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .stat {
+      background: var(--bg-cell);
+      padding: 1.5rem 1.4rem;
+    }
+    .stat .v {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 2.1rem;
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat .l {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-top: 0.6rem;
+    }
+
+    /* === Stack === */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+    @media (max-width: 720px) { .stack-grid { grid-template-columns: 1fr; } }
+    .stack-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1.5rem;
+      padding: 1.2rem 0;
+      border-top: 1px solid var(--border-soft);
+      align-items: baseline;
+    }
+    .stack-row:first-child, .stack-row:nth-child(2) { border-top: 1px solid var(--border); }
+    @media (max-width: 720px) { .stack-row { grid-template-columns: 1fr; gap: 0.5rem; } }
+    .stack-row .cat {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      font-weight: 500;
+    }
+    .stack-row .items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .chip {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      padding: 0.3rem 0.65rem;
+      background: var(--bg-cell);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--fg-soft);
+      transition: all 180ms ease;
+    }
+    .chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(62, 43, 112, 0.04);
+    }
+
+    /* === Projects === */
+    .projects-intro {
+      max-width: 60ch;
+      font-size: 1.05rem;
+      color: var(--fg-soft);
+      line-height: 1.65;
+      margin: 0 0 2.5rem 0;
+    }
+    .proj-list { display: grid; gap: 1.25rem; }
+    .proj {
+      background: var(--bg-cell);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.85rem;
+      transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+      position: relative;
+    }
+    .proj:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px -22px rgba(62, 43, 112, 0.28);
+    }
+    .proj-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .proj-id {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .proj h3 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.55rem;
+      line-height: 1.2;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .status {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+    .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+    .status.planning { color: var(--fg-muted); background: var(--bg-soft); border: 1px solid var(--border); }
+    .status.planning::before { background: var(--fg-muted); }
+    .status.progress { color: var(--orange); background: rgba(201, 101, 31, 0.10); border: 1px solid rgba(201, 101, 31, 0.25); }
+    .status.progress::before { background: var(--orange); animation: pulse 2.4s ease-in-out infinite; }
+    .status.live { color: var(--green); background: rgba(90, 122, 62, 0.10); border: 1px solid rgba(90, 122, 62, 0.25); }
+    .status.live::before { background: var(--green); }
+
+    .proj p.desc {
+      color: var(--fg-soft);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin: 0 0 1.1rem 0;
+      max-width: 65ch;
+    }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(62, 43, 112, 0.06);
+      padding: 0.22rem 0.55rem;
+      border-radius: 4px;
+    }
+    .proj-links { display: flex; gap: 1.25rem; align-items: center; }
+    .proj-links a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 200ms ease;
+    }
+    .proj-links a:hover { border-bottom-color: var(--accent); }
+    .proj-links .disabled {
+      color: var(--fg-muted);
+      cursor: not-allowed;
+    }
+    .proj-links .disabled:hover { border-bottom-color: transparent; }
+
+    /* === Contact === */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: end;
+    }
+    @media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; align-items: start; } }
+    .contact h2 { margin-bottom: 1.2rem; }
+    .contact-body {
+      font-size: 1.05rem;
+      color: var(--fg-soft);
+      line-height: 1.6;
+      max-width: 42ch;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .contact-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem;
+      background: var(--bg-cell);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      transition: all 180ms ease;
+    }
+    .contact-links a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateX(3px);
+    }
+    .contact-links .label { color: var(--fg-muted); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .contact-links .val { color: var(--fg); font-weight: 500; }
+    .contact-links a:hover .val { color: var(--accent); }
+    .contact-links a span.arr { color: var(--fg-muted); transition: transform 200ms ease; }
+    .contact-links a:hover span.arr { transform: translateX(3px); color: var(--accent); }
+
+    /* === Footer === */
+    footer {
+      border-top: 1px solid var(--border-soft);
+      padding: 2rem 0 2.5rem 0;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: var(--fg-muted);
+    }
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer .build {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    footer .build::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* === Entrance animation === */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(12px); animation: reveal 700ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards; }
+      .reveal.d1 { animation-delay: 80ms; }
+      .reveal.d2 { animation-delay: 180ms; }
+      .reveal.d3 { animation-delay: 280ms; }
+      .reveal.d4 { animation-delay: 380ms; }
+      .reveal.d5 { animation-delay: 480ms; }
+      @keyframes reveal {
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="top">
+    <div class="wrap">
+      <a href="#top" class="mark"><span class="dot"></span>xander_bennett.io</a>
+      <div class="links">
+        <a href="#work">work</a>
+        <a href="#stack">stack</a>
+        <a href="#projects">projects</a>
+        <a href="#contact">contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- === Hero === -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <div class="tag reveal">currently at pave — open to analytics engineering roles</div>
+            <h1 class="reveal d1">Analytics<br /><span class="em">engineer</span>, modeling<br />the messy middle.</h1>
+            <p class="lede reveal d2">Six years building <strong>dbt models, Looker semantic layers, and GTM data products</strong> across fintech and B2B SaaS. Salt Lake City. Currently turning compensation data and Salesforce GTM activity into things stakeholders actually trust.</p>
+            <div class="ctas reveal d3">
+              <a href="#projects" class="btn btn-primary">View projects <span class="arrow">→</span></a>
+              <a href="/assets/Alexander_Bennett_Resume.pdf" class="btn btn-ghost">Download résumé</a>
             </div>
-            <div class="form__item">
-              <label class="form__item--label">Email</label>
-              <input class="input" name="user_email" type="email" required />
-            </div>
-            <div class="form__item">
-              <label class="form__item--label">Message</label>
-              <textarea
-                class="input"
-                name="message"
-                type="text"
-                required
-              ></textarea>
-            </div>
-            <button id="contact__submit" class="form__submit">
-              Send me a message
-            </button>
-          </form>
-          <div class="modal__overlay modal__overlay--loading">
-            <i class="fas fa-spinner"></i>
           </div>
-          <div class="modal__overlay modal__overlay--success">
-            Thanks for the message! Talk to you soon.
+          <div class="data-cell reveal d4" aria-hidden="false">
+            <div class="cell-head">
+              <span class="path">models/marts/gtm/account_health.sql</span>
+              <span class="badge">passed 14 tests</span>
+            </div>
+<pre><span class="tok-com">-- account health tier, refreshed hourly</span>
+<span class="tok-kw">WITH</span> active_accounts <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    account_id,
+    arr_usd,
+    days_idle,
+    open_opps
+  <span class="tok-kw">FROM</span> {{ ref(<span class="tok-str">'int_accounts__activity'</span>) }}
+  <span class="tok-kw">WHERE</span> is_active
+)
+<span class="tok-kw">SELECT</span>
+  account_id,
+  arr_usd,
+  <span class="tok-kw">CASE</span>
+    <span class="tok-kw">WHEN</span> days_idle <span class="tok-fn">&gt;</span> <span class="tok-num">60</span> <span class="tok-kw">THEN</span> <span class="tok-str">'at_risk'</span>
+    <span class="tok-kw">WHEN</span> days_idle <span class="tok-kw">BETWEEN</span> <span class="tok-num">30</span> <span class="tok-kw">AND</span> <span class="tok-num">60</span> <span class="tok-kw">THEN</span> <span class="tok-str">'attention'</span>
+    <span class="tok-kw">ELSE</span> <span class="tok-str">'healthy'</span>
+  <span class="tok-kw">END</span> <span class="tok-kw">AS</span> health_tier
+<span class="tok-kw">FROM</span> active_accounts</pre>
+            <div class="cell-out">
+              <div class="cell-out-head">→ output · 4 rows</div>
+              <table class="df" role="table">
+                <thead>
+                  <tr><th>account_id</th><th>arr_usd</th><th>health_tier</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>acc_018b</td><td class="num">$148,000</td><td><span class="pill health">healthy</span></td></tr>
+                  <tr><td>acc_022c</td><td class="num">$96,500</td><td><span class="pill attn">attention</span></td></tr>
+                  <tr><td>acc_041a</td><td class="num">$212,400</td><td><span class="pill risk">at_risk</span></td></tr>
+                  <tr><td>acc_055d</td><td class="num">$74,200</td><td><span class="pill health">healthy</span></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-      <img src="assets/semi circle.svg" class="shape shape--0" />
-      <img src="assets/circle.svg" class="shape shape--1" />
-      <img src="assets/squiggly.svg" class="shape shape--2" />
-      <img src="assets/circle.svg" class="shape shape--3" />
-      <img src="assets/triangle.svg" class="shape shape--4" />
-      <img src="assets/circle.svg" class="shape shape--5" />
-      <img src="assets/squiggly.svg" class="shape shape--6" />
-      <img src="assets/circle.svg" class="shape shape--7" />
-      <img src="assets/semi circle.svg" class="shape shape--8" />
     </section>
-    <section id="projects">
-      <div class="container">
-        <div class="row">
-          <h1 class="section__title">
-            Here are some of my <span class="orange">projects</span>
-          </h1>
-          <ul class="project__list">
-            <li class="project">
-              <div class="project__wrapper">
-                <img
-                  class="project__img"
-                  src="/assets/blinker mockup.png"
-                  alt=""
-                />
-                <div class="project__wrapper--bg"></div>
-                <div class="project__description">
-                  <h3 class="project__description--title">Project 1</h3>
-                  <h4 class="project__description--sub-title">
-                    HTML, CSS, Javascript, Python, Looker
-                  </h4>
-                  <p class="project__description--para">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Illum, cum? Nihil eligendi, illum reiciendis perferendis
-                    sequi itaque sint voluptas, error dignissimos laborum porro
-                    soluta nam atque? Facere sint possimus in.
-                  </p>
-                  <div class="project__description--links">
-                    <a
-                      href=""
-                      target="_blank"
-                      class="project__description--link click"
-                    >
-                      <i class="fas fa-link"></i>
-                    </a>
-                    <a
-                      href=""
-                      target="_blank"
-                      class="project__description--link click"
-                    >
-                      <i class="fab fa-github"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="project">
-              <div class="project__wrapper">
-                <img
-                  class="project__img"
-                  src="/assets/blinker mockup.png"
-                  alt=""
-                />
-                <div class="project__wrapper--bg"></div>
-                <div class="project__description">
-                  <h3 class="project__description--title">Project 2</h3>
-                  <h4 class="project__description--sub-title">
-                    HTML, CSS, Javascript, Python, Looker
-                  </h4>
-                  <p class="project__description--para">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Illum, cum? Nihil eligendi, illum reiciendis perferendis
-                    sequi itaque sint voluptas, error dignissimos laborum porro
-                    soluta nam atque? Facere sint possimus in.
-                  </p>
-                  <div class="project__description--links">
-                    <a
-                      href=""
-                      target="_blank"
-                      class="project__description--link click"
-                    >
-                      <i class="fas fa-link"></i>
-                    </a>
-                    <a
-                      href=""
-                      target="_blank"
-                      class="project__description--link click"
-                    >
-                      <i class="fab fa-github"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="project">
-              <div class="project__wrapper">
-                <img
-                  class="project__img"
-                  src="/assets/blinker mockup.png"
-                  alt=""
-                />
-                <div class="project__wrapper--bg"></div>
-                <div class="project__description">
-                  <h3 class="project__description--title">Project 3</h3>
-                  <h4 class="project__description--sub-title">
-                    HTML, CSS, Javascript, Python, Looker
-                  </h4>
-                  <p class="project__description--para">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Illum, cum? Nihil eligendi, illum reiciendis perferendis
-                    sequi itaque sint voluptas, error dignissimos laborum porro
-                    soluta nam atque? Facere sint possimus in.
-                  </p>
-                  <div class="project__description--links">
-                    <a
-                      href=""
-                      target="_blank"
-                      class="project__description--link click"
-                    >
-                      <i class="fas fa-link"></i>
-                    </a>
-                    <a
-                      href=""
-                      target="_blank"
-                      class="project__description--link click"
-                    >
-                      <i class="fab fa-github"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
+
+    <!-- === About === -->
+    <section class="about" id="work">
+      <div class="wrap">
+        <div class="cell-label"><span class="num">[01]</span><span>about</span><span class="rule"></span></div>
+        <div class="about-grid">
+          <div class="about-body">
+            <h2>Built for the <span class="em">messy</span> middle of the data stack.</h2>
+            <p>I'm <strong>Xander</strong>. I model data — staging, intermediate, marts — and the layer where business questions meet warehouse reality. Spent six years at <strong>Addepar</strong> (a $1T+ AUM wealth platform) growing from operations analyst into the team that owned LookML, Snowflake, and the daily delivery of trusted data for the firm's product and ops orgs.</p>
+            <p>Then a stint at <strong>Dorsia</strong> leading their analytics platform re-architecture from GCP to AWS — new dbt project, new semantic layer, 90% faster analytics SLA. Currently at <strong>Pave</strong>, building GTM data infrastructure for the compensation management platform that powers comp planning across 10,000+ companies.</p>
+            <p>The work I keep coming back to: <strong>turning Salesforce + product event + warehouse data into models that don't break</strong>, that pass their tests, and that the next analyst can read.</p>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <div class="v">6+</div>
+              <div class="l">Years in analytics</div>
+            </div>
+            <div class="stat">
+              <div class="v">$1T+</div>
+              <div class="l">AUM data owned</div>
+            </div>
+            <div class="stat">
+              <div class="v">30+</div>
+              <div class="l">Accounts at Pave</div>
+            </div>
+            <div class="stat">
+              <div class="v">90%</div>
+              <div class="l">SLA reduction at Dorsia</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-    <footer>
-      <div class="container">
-        <div class="row footer__row">
-          <a href="#" class="footer__anchor">
-            <figure class="footer__logo">
-              <img src="./assets/logo.svg" class="footer__logo--image" alt="" />
-            </figure>
-            <span class="footer__logo--popper">
-              Top
-              <i class="fas fa-arrow-up"></i>
-            </span>
-          </a>
-          <div class="footer__social--list">
-            <a
-              href="https://github.com/xander-bennett"
-              class="footer__social--link link__hover-effect link__hover-effect--white"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/xander-bennett/"
-              target="_blank"
-              class="footer__social--link link__hover-effect link__hover-effect--white"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="#"
-              onclick="toggleModal()"
-              class="footer__social--link link__hover-effect link__hover-effect--white"
-            >
-              Contact
-            </a>
-            <a
-              href="./assets/Alexander_Bennett_Resume.pdf"
-              target="_blank"
-              class="footer__social--link link__hover-effect link__hover-effect--white"
-            >
-              Resume
-            </a>
+
+    <!-- === Stack === -->
+    <section class="stack" id="stack">
+      <div class="wrap">
+        <div class="cell-label"><span class="num">[02]</span><span>stack</span><span class="rule"></span></div>
+        <h2>What I reach for.</h2>
+        <div style="margin-top: 2.5rem;">
+          <div class="stack-row">
+            <div class="cat">Modeling</div>
+            <div class="items">
+              <span class="chip">dbt</span>
+              <span class="chip">SQL</span>
+              <span class="chip">Dimensional modeling</span>
+              <span class="chip">Semantic layer</span>
+              <span class="chip">SCD Type 2</span>
+              <span class="chip">dbt tests</span>
+            </div>
           </div>
-          <div class="footer__copyright">
-            Copyright &copy; 2023 Xander Bennett
+          <div class="stack-row">
+            <div class="cat">Warehouses</div>
+            <div class="items">
+              <span class="chip">Snowflake</span>
+              <span class="chip">BigQuery</span>
+              <span class="chip">Redshift</span>
+              <span class="chip">GCP</span>
+              <span class="chip">AWS</span>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="cat">BI</div>
+            <div class="items">
+              <span class="chip">Looker</span>
+              <span class="chip">LookML</span>
+              <span class="chip">Lightdash</span>
+              <span class="chip">Hex</span>
+              <span class="chip">Mode</span>
+              <span class="chip">Tableau</span>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="cat">Code</div>
+            <div class="items">
+              <span class="chip">Python</span>
+              <span class="chip">pandas</span>
+              <span class="chip">scikit-learn</span>
+              <span class="chip">Jupyter</span>
+              <span class="chip">Git</span>
+              <span class="chip">GitHub Actions</span>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="cat">Product analytics</div>
+            <div class="items">
+              <span class="chip">Heap</span>
+              <span class="chip">Mixpanel</span>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="cat">GTM &amp; CRM</div>
+            <div class="items">
+              <span class="chip">Salesforce</span>
+              <span class="chip">Gong</span>
+              <span class="chip">Outreach</span>
+            </div>
+          </div>
+          <div class="stack-row">
+            <div class="cat">Integrations</div>
+            <div class="items">
+              <span class="chip">REST APIs</span>
+              <span class="chip">SFTP</span>
+              <span class="chip">Webhook ingestion</span>
+            </div>
           </div>
         </div>
       </div>
-    </footer>
-  </body>
+    </section>
+
+    <!-- === Projects === -->
+    <section class="projects" id="projects">
+      <div class="wrap">
+        <div class="cell-label"><span class="num">[03]</span><span>selected projects</span><span class="rule"></span></div>
+        <h2>What I'm <span class="em">building</span> in public.</h2>
+        <p class="projects-intro">Three projects shipping over the next several weeks — each one a public dbt project, a write-up, and a real artifact you can poke at. Built to demonstrate analytics engineering at the messy middle of the data stack: schema design, dbt model architecture, applied ML for business outcomes, and LLM-augmented analytics workflows.</p>
+
+        <div class="proj-list">
+          <article class="proj">
+            <div class="proj-head">
+              <div>
+                <div class="proj-id">project_01</div>
+                <h3>GTM Semantic Layer</h3>
+              </div>
+              <span class="status progress">In progress</span>
+            </div>
+            <p class="desc">A complete dbt project modeling a synthetic CRM dataset (accounts, opportunities, contacts, activities) into a sales-funnel mart with account-health scoring. Staging → intermediate → marts architecture, 60+ models, custom generic tests for referential integrity and business rules, dbt docs deployed to GitHub Pages. The semantic layer renders out to Looker explores.</p>
+            <div class="proj-tags">
+              <span class="tag">dbt</span>
+              <span class="tag">BigQuery</span>
+              <span class="tag">Looker</span>
+              <span class="tag">dimensional modeling</span>
+              <span class="tag">GitHub Actions</span>
+            </div>
+            <div class="proj-links">
+              <a class="disabled">github →</a>
+              <a class="disabled">case study →</a>
+              <a class="disabled">dbt docs →</a>
+            </div>
+          </article>
+
+          <article class="proj">
+            <div class="proj-head">
+              <div>
+                <div class="proj-id">project_02</div>
+                <h3>Marketing Attribution &amp; LTV</h3>
+              </div>
+              <span class="status planning">Planning</span>
+            </div>
+            <p class="desc">A predictive-modeling layer on top of public e-commerce data (Brazilian Olist dataset). dbt customer-journey models feed a Python BG/NBD + Gamma-Gamma LTV model and a multi-touch attribution analysis. End-to-end: warehouse modeling, feature engineering, scikit-learn/lifetimes modeling, surfaced through a small interactive app.</p>
+            <div class="proj-tags">
+              <span class="tag">dbt</span>
+              <span class="tag">Python</span>
+              <span class="tag">scikit-learn</span>
+              <span class="tag">lifetimes</span>
+              <span class="tag">attribution</span>
+            </div>
+            <div class="proj-links">
+              <a class="disabled">github →</a>
+              <a class="disabled">case study →</a>
+            </div>
+          </article>
+
+          <article class="proj">
+            <div class="proj-head">
+              <div>
+                <div class="proj-id">project_03</div>
+                <h3>LLM-Augmented Analytics Workflow</h3>
+              </div>
+              <span class="status planning">Planning</span>
+            </div>
+            <p class="desc">An AI tool that knows your semantic layer. RAG over warehouse metadata, dbt exposures, and column-level lineage to answer natural-language questions with semantic-layer-grounded SQL — and flag when the question can't be answered cleanly by the existing model. The version of "talk to your data" that doesn't hallucinate metrics.</p>
+            <div class="proj-tags">
+              <span class="tag">Python</span>
+              <span class="tag">OpenAI</span>
+              <span class="tag">pgvector</span>
+              <span class="tag">RAG</span>
+              <span class="tag">dbt metadata</span>
+            </div>
+            <div class="proj-links">
+              <a class="disabled">github →</a>
+              <a class="disabled">case study →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Contact === -->
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <div class="cell-label"><span class="num">[04]</span><span>contact</span><span class="rule"></span></div>
+        <div class="contact-grid">
+          <div>
+            <h2>Open to analytics<br />engineering work.</h2>
+            <p class="contact-body">If you're hiring AE — particularly GTM, marketing, or product analytics — or you just want to talk dbt patterns and semantic layer design, the door is open.</p>
+          </div>
+          <div class="contact-links">
+            <a href="mailto:xanderwbennett@gmail.com">
+              <span>
+                <span class="label">email</span><br />
+                <span class="val">xanderwbennett@gmail.com</span>
+              </span>
+              <span class="arr">→</span>
+            </a>
+            <a href="https://linkedin.com/in/xander-bennett" target="_blank" rel="noopener">
+              <span>
+                <span class="label">linkedin</span><br />
+                <span class="val">/in/xander-bennett</span>
+              </span>
+              <span class="arr">→</span>
+            </a>
+            <a href="https://github.com/xander-bennett" target="_blank" rel="noopener">
+              <span>
+                <span class="label">github</span><br />
+                <span class="val">@xander-bennett</span>
+              </span>
+              <span class="arr">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Xander Bennett — Salt Lake City, UT</span>
+      <span class="build">last deploy · main@2026.05</span>
+    </div>
+  </footer>
+</body>
 </html>
