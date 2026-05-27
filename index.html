@@ -14,6 +14,7 @@
       --bg-soft: #ECE5D5;
       --bg-cell: #FBF8F1;
       --bg-cell-2: #F8F3E6;
+      --bg-cell-3: #F0E9D7;
       --fg: #14110D;
       --fg-soft: #4A4540;
       --fg-muted: #7E776E;
@@ -23,22 +24,35 @@
       --accent: #3E2B70;
       --accent-2: #5B3FA8;
       --accent-soft: #8B79C2;
+      --accent-faint: rgba(62, 43, 112, 0.07);
       --orange: #C9651F;
       --orange-soft: #E89968;
       --teal: #2F5D54;
       --green: #5A7A3E;
+      --green-faint: rgba(90, 122, 62, 0.12);
+      --green-soft-bg: rgba(90, 122, 62, 0.06);
       --red: #A83333;
+      --red-faint: rgba(168, 51, 51, 0.10);
+      --red-soft-bg: rgba(168, 51, 51, 0.05);
+
       --max: 1200px;
-      --gutter-y: clamp(4rem, 8vw, 7rem);
+      --gutter-y: clamp(4rem, 7.5vw, 6.5rem);
       --radius-sm: 4px;
       --radius: 8px;
       --radius-lg: 14px;
+
       --sans: "IBM Plex Sans", system-ui, sans-serif;
       --serif: "Fraunces", "Times New Roman", serif;
       --mono: "JetBrains Mono", ui-monospace, monospace;
+
       --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+      --shadow-card: 0 1px 0 rgba(20,17,13,0.04), 0 6px 14px -8px rgba(20,17,13,0.10), 0 22px 50px -28px rgba(20,17,13,0.22);
+      --shadow-cell: 0 1px 0 rgba(20,17,13,0.04), 0 10px 24px -14px rgba(20,17,13,0.14), 0 28px 60px -28px rgba(62,43,112,0.18);
+      --shadow-hover: 0 1px 0 rgba(20,17,13,0.04), 0 14px 28px -12px rgba(62,43,112,0.22), 0 38px 70px -28px rgba(62,43,112,0.32);
     }
+
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
@@ -46,55 +60,117 @@
       font-family: var(--sans); font-size: 16px; line-height: 1.55;
       -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
       overflow-x: hidden;
+      font-feature-settings: "ss01" 1, "cv11" 1;
     }
     img, svg { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; cursor: pointer; }
-    ::selection { background: rgba(62, 43, 112, 0.18); color: var(--fg); }
+    ::selection { background: rgba(62, 43, 112, 0.20); color: var(--fg); }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; border: 2px solid var(--bg); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-soft); }
+
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 60%, var(--accent-soft) 100%);
+      z-index: 100; transition: width 60ms linear;
+      box-shadow: 0 0 8px rgba(91, 63, 168, 0.45);
+    }
 
     body::before {
       content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      opacity: 0.35;
+      opacity: 0.30;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.05 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       mix-blend-mode: multiply;
     }
     body::after {
       content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 60vw 50vh at 85% 10%, rgba(91, 63, 168, 0.07), transparent 60%),
-        radial-gradient(ellipse 50vw 40vh at 10% 90%, rgba(201, 101, 31, 0.05), transparent 65%);
+        radial-gradient(ellipse 60vw 50vh at 88% 8%, rgba(91, 63, 168, 0.09), transparent 60%),
+        radial-gradient(ellipse 50vw 40vh at 8% 92%, rgba(201, 101, 31, 0.05), transparent 65%),
+        radial-gradient(ellipse 40vw 30vh at 95% 55%, rgba(47, 93, 84, 0.04), transparent 70%);
     }
 
     .cursor-glow {
-      position: fixed; width: 320px; height: 320px; border-radius: 50%;
+      position: fixed; width: 360px; height: 360px; border-radius: 50%;
       pointer-events: none; z-index: 1;
-      background: radial-gradient(circle, rgba(91, 63, 168, 0.12), transparent 65%);
+      background: radial-gradient(circle, rgba(91, 63, 168, 0.14), transparent 65%);
       transform: translate(-50%, -50%) scale(0);
-      transition: transform 400ms var(--ease-out), opacity 400ms var(--ease-out);
+      transition: transform 420ms var(--ease-out), opacity 420ms var(--ease-out);
       opacity: 0; mix-blend-mode: multiply;
     }
     .cursor-glow.active { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 
     .wrap { max-width: var(--max); margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); position: relative; z-index: 1; }
 
+    /* Floating section TOC */
+    .section-toc {
+      position: fixed; right: 1.3rem; top: 50%;
+      transform: translateY(-50%); z-index: 30;
+      display: flex; flex-direction: column; gap: 0.85rem;
+    }
+    .section-toc .stoc {
+      position: relative; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border); cursor: pointer;
+      transition: all 280ms var(--ease);
+    }
+    .section-toc .stoc:hover { background: var(--accent-soft); transform: scale(1.3); }
+    .section-toc .stoc.active {
+      background: var(--accent); width: 8px; height: 8px; margin-left: -1px;
+      box-shadow: 0 0 0 3px rgba(62, 43, 112, 0.16);
+    }
+    .section-toc .stoc .lbl {
+      position: absolute; right: 100%; top: 50%; margin-right: 0.85rem;
+      transform: translateY(-50%) translateX(6px);
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.10em;
+      text-transform: uppercase; color: var(--fg-soft);
+      background: rgba(251, 248, 241, 0.96); padding: 4px 9px; border-radius: 4px;
+      border: 1px solid var(--border-soft);
+      opacity: 0; transition: all 240ms var(--ease);
+      white-space: nowrap; pointer-events: none;
+      box-shadow: 0 4px 10px -4px rgba(20, 17, 13, 0.08);
+    }
+    .section-toc .stoc:hover .lbl,
+    .section-toc .stoc.active .lbl {
+      opacity: 1; transform: translateY(-50%) translateX(0);
+    }
+    @media (max-width: 1100px) { .section-toc { display: none; } }
+
+    /* Nav */
     nav.top {
       position: sticky; top: 0; z-index: 50;
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      background: rgba(244, 239, 229, 0.78);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      background: rgba(244, 239, 229, 0.72);
       border-bottom: 1px solid transparent;
-      transition: border-color 240ms var(--ease), background 240ms var(--ease);
+      transition: border-color 280ms var(--ease), background 280ms var(--ease);
     }
     nav.top.scrolled { border-bottom-color: var(--border-soft); background: rgba(244, 239, 229, 0.92); }
     nav.top .wrap { display: flex; align-items: center; justify-content: space-between; padding: 1.05rem 0; }
     nav .mark {
       font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.04em;
       color: var(--fg); display: inline-flex; align-items: center; gap: 0.6rem;
+      transition: opacity 200ms var(--ease);
     }
+    nav .mark:hover { opacity: 0.7; }
     nav .mark .dot {
       width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
-      display: inline-block; box-shadow: 0 0 0 3px rgba(62, 43, 112, 0.12);
+      display: inline-block; box-shadow: 0 0 0 3px rgba(62, 43, 112, 0.14);
+      position: relative;
     }
-    nav .links { display: flex; gap: 1.8rem; }
+    nav .mark .dot::after {
+      content: ""; position: absolute; inset: 0; border-radius: 50%;
+      background: var(--accent); animation: navPulse 3s ease-in-out infinite;
+    }
+    @keyframes navPulse {
+      0%, 100% { opacity: 0; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(2.2); }
+    }
+    nav .links { display: flex; gap: 1.6rem; }
     nav .links a {
       font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em;
       color: var(--fg-soft); position: relative; transition: color 200ms var(--ease);
@@ -102,15 +178,26 @@
     nav .links a::after {
       content: ""; position: absolute; left: 0; right: 0; bottom: -6px;
       height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left;
-      transition: transform 280ms var(--ease);
+      transition: transform 360ms var(--ease);
     }
-    nav .links a:hover { color: var(--accent); }
-    nav .links a:hover::after { transform: scaleX(1); }
-    @media (max-width: 640px) { nav .links { gap: 1.1rem; } nav .links a { font-size: 0.72rem; } }
-    @media (max-width: 480px) { nav .links { display: none; } }
+    nav .links a:hover, nav .links a.active { color: var(--accent); }
+    nav .links a:hover::after, nav .links a.active::after { transform: scaleX(1); }
+    @media (max-width: 720px) { nav .links { gap: 0.95rem; } nav .links a { font-size: 0.72rem; } }
+    @media (max-width: 540px) {
+      nav .links { gap: 0.7rem; overflow-x: auto; flex-wrap: nowrap; max-width: 62%; scrollbar-width: none; -ms-overflow-style: none; }
+      nav .links::-webkit-scrollbar { display: none; }
+      nav .links a { font-size: 0.62rem; letter-spacing: 0.02em; flex-shrink: 0; }
+      nav .mark { font-size: 0.74rem; }
+    }
+    @media (max-width: 420px) {
+      nav .links { gap: 0.55rem; }
+      nav .links a { font-size: 0.58rem; }
+      nav .mark { font-size: 0.68rem; }
+    }
+    @media (max-width: 360px) { nav .links a { font-size: 0.54rem; } }
 
     .cell-label {
-      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.10em;
       text-transform: uppercase; color: var(--fg-muted);
       display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.75rem;
     }
@@ -123,73 +210,76 @@
     h2 {
       font-family: var(--serif); font-weight: 500;
       font-size: clamp(2.2rem, 4.5vw, 3.2rem);
-      line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 1.5rem 0;
+      line-height: 1.04; letter-spacing: -0.028em; margin: 0 0 1.5rem 0;
+      font-variation-settings: "opsz" 96;
     }
-    h2 .em { font-style: italic; color: var(--accent); font-weight: 400; }
+    h2 .em { font-style: italic; color: var(--accent); font-weight: 400; font-variation-settings: "opsz" 96; }
 
+    /* HERO */
     .hero { padding-top: clamp(3rem, 6vw, 5.5rem); padding-bottom: clamp(4rem, 7vw, 6.5rem); }
-    .hero-grid {
-      display: grid; grid-template-columns: 1.05fr 1fr;
-      gap: clamp(2.5rem, 4vw, 4rem); align-items: center;
-    }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2.5rem, 4vw, 4rem); align-items: center; }
     @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; } }
 
     .hero h1 {
       font-family: var(--serif); font-weight: 500;
       font-size: clamp(3rem, 7.5vw, 6rem);
-      line-height: 0.94; letter-spacing: -0.03em; margin: 0 0 1.75rem 0;
+      line-height: 0.92; letter-spacing: -0.035em; margin: 0 0 1.75rem 0;
+      font-variation-settings: "opsz" 144;
     }
     .hero h1 .em {
       font-style: italic; font-weight: 400; color: var(--accent);
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 60%, #6F50C2 100%);
       -webkit-background-clip: text; background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-variation-settings: "opsz" 144;
     }
     .hero .tag {
-      font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--fg-muted);
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.10em;
+      text-transform: uppercase; color: var(--fg-soft);
       margin-bottom: 1.5rem; display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 0.4rem 0.85rem; border: 1px solid var(--border); border-radius: 999px;
-      background: rgba(251, 248, 241, 0.5);
+      padding: 0.42rem 0.85rem; border: 1px solid var(--border); border-radius: 999px;
+      background: rgba(251, 248, 241, 0.55); backdrop-filter: blur(6px);
     }
     .hero .tag .pulse-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; position: relative; }
     .hero .tag .pulse-dot::after {
       content: ""; position: absolute; inset: -3px; border-radius: 50%;
-      border: 1px solid var(--green); animation: ring 2s ease-out infinite;
+      border: 1px solid var(--green); animation: ring 2.4s ease-out infinite;
     }
-    @keyframes ring { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
-    .hero p.lede {
-      font-size: 1.18rem; line-height: 1.55; color: var(--fg-soft);
-      max-width: 42ch; margin: 0 0 2.25rem 0;
-    }
+    @keyframes ring { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(2.4); opacity: 0; } }
+    .hero p.lede { font-size: 1.18rem; line-height: 1.55; color: var(--fg-soft); max-width: 42ch; margin: 0 0 2.25rem 0; }
     .hero p.lede strong { color: var(--fg); font-weight: 500; }
 
     .ctas { display: flex; gap: 0.85rem; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: 0.55rem;
       padding: 0.9rem 1.4rem; border-radius: var(--radius);
-      font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.03em;
-      transition: all 220ms var(--ease); border: 1px solid transparent;
+      font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.02em;
+      transition: all 240ms var(--ease); border: 1px solid transparent;
       position: relative; overflow: hidden;
     }
     .btn-primary {
       background: var(--accent); color: #FBF8F1; border-color: var(--accent);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 8px 24px -10px rgba(62, 43, 112, 0.45);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 10px 24px -10px rgba(62, 43, 112, 0.42);
     }
-    .btn-primary:hover {
-      background: #2E2056; border-color: #2E2056; transform: translateY(-1px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 14px 30px -10px rgba(62, 43, 112, 0.55);
+    .btn-primary::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.20) 50%, transparent 100%);
+      transform: translateX(-100%); transition: transform 700ms var(--ease-out);
     }
+    .btn-primary:hover { background: #2E2056; border-color: #2E2056; transform: translateY(-1px); box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 16px 32px -10px rgba(62, 43, 112, 0.55); }
+    .btn-primary:hover::before { transform: translateX(100%); }
     .btn-ghost { background: transparent; color: var(--fg); border-color: var(--border); }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: rgba(251, 248, 241, 0.5); }
-    .btn .arrow { transition: transform 240ms var(--ease); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: rgba(251, 248, 241, 0.55); }
+    .btn .arrow { transition: transform 260ms var(--ease); position: relative; z-index: 1; }
     .btn:hover .arrow { transform: translateX(4px); }
+    .btn > * { position: relative; z-index: 1; }
 
+    /* Data cell */
     .data-cell {
       background: var(--bg-cell); border: 1px solid var(--border);
       border-radius: var(--radius-lg); overflow: hidden;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03), 0 20px 50px -25px rgba(20, 17, 13, 0.22), 0 6px 12px -8px rgba(62, 43, 112, 0.10);
-      position: relative;
+      box-shadow: var(--shadow-cell); position: relative;
+      transition: transform 600ms var(--ease-out);
     }
     .cell-head {
       display: flex; align-items: center; justify-content: space-between;
@@ -203,53 +293,70 @@
     .cell-head .dots span:nth-child(2) { background: #E0C58A; }
     .cell-head .dots span:nth-child(3) { background: #A8C593; }
     .cell-head .path { color: var(--fg-soft); }
-    .cell-head .badge { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--green); font-weight: 500; }
+    .cell-head .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem; color: var(--green); font-weight: 500;
+      transition: opacity 240ms var(--ease); white-space: nowrap; flex-shrink: 0;
+    }
     .cell-head .badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
 
-    .tabs {
-      display: flex; border-bottom: 1px solid var(--border-soft);
-      background: var(--bg-cell); padding: 0 0.4rem;
+    /* Hero cell footer: compile ticker */
+    .cell-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.45rem 0.95rem; background: var(--bg-cell-2);
+      border-top: 1px solid var(--border-soft);
+      font-family: var(--mono); font-size: 0.66rem; color: var(--fg-muted);
+      letter-spacing: 0.02em;
     }
+    .cell-footer .compile { display: inline-flex; align-items: center; gap: 0.45rem; }
+    .cell-footer .compile-dot {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+      animation: compilePulse 2.4s ease-in-out infinite;
+    }
+    @keyframes compilePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+    .cell-footer .ticker { color: var(--fg-soft); font-variant-numeric: tabular-nums; }
+
+    .tabs { display: flex; border-bottom: 1px solid var(--border-soft); background: var(--bg-cell); padding: 0 0.4rem; position: relative; }
     .tab {
       font-family: var(--mono); font-size: 0.74rem;
       padding: 0.7rem 0.85rem; color: var(--fg-muted);
       background: none; border: none; cursor: pointer; letter-spacing: 0.02em;
       border-bottom: 2px solid transparent;
-      transition: color 200ms var(--ease), border-color 200ms var(--ease);
+      transition: color 200ms var(--ease), border-color 200ms var(--ease), background 200ms var(--ease);
       margin-bottom: -1px; display: inline-flex; align-items: center; gap: 0.4rem;
+      border-radius: 4px 4px 0 0;
     }
     .tab .ic { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.5; }
-    .tab:hover { color: var(--fg); }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab:hover { color: var(--fg); background: rgba(217, 210, 192, 0.20); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: transparent; }
     .tab.active .ic { opacity: 1; }
 
     .panes { position: relative; }
-    .pane { display: none; animation: paneIn 320ms var(--ease-out); }
+    .pane { display: none; animation: paneIn 340ms var(--ease-out); }
     .pane.active { display: block; }
-    @keyframes paneIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes paneIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    pre.code {
-      margin: 0; padding: 1.1rem 1.2rem;
-      font-family: var(--mono); font-size: 0.78rem; line-height: 1.65;
-      color: var(--fg); overflow-x: auto;
-    }
+    pre.code { margin: 0; padding: 1.1rem 1.2rem; font-family: var(--mono); font-size: 0.78rem; line-height: 1.65; color: var(--fg); overflow-x: auto; }
     .tok-kw { color: var(--accent); font-weight: 500; }
     .tok-fn { color: var(--orange); }
     .tok-str { color: var(--teal); }
     .tok-com { color: var(--fg-muted); font-style: italic; }
     .tok-num { color: var(--orange); }
+    .tok-key { color: var(--accent); }
+    .tok-bool { color: var(--teal); }
+    .tok-list { color: var(--orange); }
 
     .cell-out { border-top: 1px solid var(--border-soft); background: var(--bg-cell); }
-    .cell-out-head {
-      padding: 0.5rem 1rem; font-family: var(--mono); font-size: 0.68rem;
-      color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase;
-      border-bottom: 1px solid var(--border-soft); display: flex; justify-content: space-between;
-    }
+    .cell-out-head { padding: 0.5rem 1rem; font-family: var(--mono); font-size: 0.68rem; color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid var(--border-soft); display: flex; justify-content: space-between; }
     .cell-out-head .time { color: var(--fg-faint); }
     table.df { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.74rem; }
     table.df th, table.df td { padding: 0.5rem 1rem; text-align: left; border-bottom: 1px solid var(--border-soft); }
     table.df th { color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em; background: rgba(217, 210, 192, 0.15); }
     table.df tr:last-child td { border-bottom: none; }
+    table.df tr { transition: background 180ms var(--ease); }
+    table.df tbody tr:hover { background: rgba(62, 43, 112, 0.03); }
     table.df td.num { font-variant-numeric: tabular-nums; }
     table.df .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.66rem; font-weight: 500; }
     .pill.health { background: rgba(90, 122, 62, 0.14); color: var(--green); }
@@ -266,85 +373,370 @@
     .lineage { padding: 1rem; background: var(--bg-cell); }
     .lineage svg { width: 100%; height: auto; }
 
+    .draw-on-reveal path { stroke-dasharray: 200; stroke-dashoffset: 200; }
+    .reveal.in .draw-on-reveal path,
+    .pane.active .draw-on-reveal path { animation: drawIn 1.2s var(--ease-out) forwards; }
+    @keyframes drawIn { to { stroke-dashoffset: 0; } }
+
     .tests { padding: 0.7rem 1rem 1rem; font-family: var(--mono); font-size: 0.74rem; }
     .test-row { display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0; border-bottom: 1px dashed var(--border-soft); }
     .test-row:last-child { border-bottom: none; }
-    .test-row .status-dot {
-      width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0;
-      box-shadow: 0 0 0 3px rgba(90, 122, 62, 0.15);
-    }
+    .test-row .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; box-shadow: 0 0 0 3px rgba(90, 122, 62, 0.15); }
     .test-row .name { flex: 1; color: var(--fg); }
     .test-row .name .lbl { color: var(--fg-muted); font-size: 0.7rem; }
     .test-row .time { color: var(--fg-muted); font-size: 0.68rem; }
 
-    .about-grid {
-      display: grid; grid-template-columns: 1.25fr 1fr;
-      gap: clamp(2rem, 5vw, 5rem); align-items: start;
-    }
+    /* About */
+    .about-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
     @media (max-width: 920px) { .about-grid { grid-template-columns: 1fr; } }
     .about-body p { font-size: 1.08rem; color: var(--fg-soft); line-height: 1.7; margin: 0 0 1rem 0; }
     .about-body p strong { color: var(--fg); font-weight: 500; }
 
     .pullquote {
-      margin-top: 1.5rem; padding: 1.1rem 1.3rem;
-      border-left: 3px solid var(--accent); background: rgba(251, 248, 241, 0.5);
+      margin-top: 1.5rem; padding: 1.1rem 1.3rem 1.1rem 1.4rem;
+      border-left: 3px solid var(--accent); background: rgba(251, 248, 241, 0.55);
       border-radius: 0 var(--radius) var(--radius) 0;
       font-family: var(--serif); font-style: italic; font-size: 1.1rem; line-height: 1.5; color: var(--fg);
+      font-variation-settings: "opsz" 36;
     }
-    .pullquote::before {
-      content: "“"; font-family: var(--serif); font-size: 2.4rem; line-height: 0;
-      vertical-align: -0.5rem; color: var(--accent); margin-right: 0.2rem;
-    }
+    .pullquote::before { content: "“"; font-family: var(--serif); font-size: 2.6rem; line-height: 0; vertical-align: -0.55rem; color: var(--accent); margin-right: 0.2rem; font-variation-settings: "opsz" 144; }
 
-    .metrics {
-      background: var(--bg-cell); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); overflow: hidden;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03), 0 10px 30px -18px rgba(20, 17, 13, 0.18);
-    }
-    .metrics-head {
-      padding: 0.55rem 1rem; background: var(--bg-cell-2);
-      border-bottom: 1px solid var(--border);
-      font-family: var(--mono); font-size: 0.68rem; color: var(--fg-muted);
-      letter-spacing: 0.06em; text-transform: uppercase;
-      display: flex; justify-content: space-between;
-    }
+    .metrics { background: var(--bg-cell); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card); }
+    .metrics-head { padding: 0.55rem 1rem; background: var(--bg-cell-2); border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 0.68rem; color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase; display: flex; justify-content: space-between; }
     .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border-soft); }
     .metric { background: var(--bg-cell); padding: 1.4rem 1.4rem; }
-    .metric .v {
-      font-family: var(--serif); font-weight: 500; font-size: 2.4rem; line-height: 1;
-      color: var(--fg); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
-      display: inline-flex; align-items: baseline; gap: 0.3rem;
-    }
-    .metric .v .unit { font-size: 1.1rem; color: var(--accent); font-weight: 400; }
-    .metric .l {
-      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--fg-muted); margin-top: 0.55rem;
-    }
-    .metric .d {
-      font-family: var(--mono); font-size: 0.7rem; color: var(--green);
-      margin-top: 0.35rem; display: inline-flex; align-items: center; gap: 0.3rem;
-    }
+    .metric .v { font-family: var(--serif); font-weight: 500; font-size: 2.4rem; line-height: 1; color: var(--fg); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; display: inline-flex; align-items: baseline; gap: 0.3rem; font-variation-settings: "opsz" 96; }
+    .metric .v .unit { font-size: 1.1rem; color: var(--accent); font-weight: 400; font-variation-settings: "opsz" 36; }
+    .metric .l { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); margin-top: 0.55rem; }
+    .metric .d { font-family: var(--mono); font-size: 0.7rem; color: var(--green); margin-top: 0.35rem; display: inline-flex; align-items: center; gap: 0.3rem; }
     .metric .d::before { content: "↑"; font-size: 0.82rem; }
     .metric .d.neutral { color: var(--fg-muted); }
     .metric .d.neutral::before { content: "·"; }
 
-    .arc {
-      margin-top: 1rem; background: var(--bg-cell);
-      border: 1px solid var(--border); border-radius: var(--radius-lg);
-      padding: 1rem 1.1rem 1.2rem; box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-    }
-    .arc-head {
-      font-family: var(--mono); font-size: 0.68rem; color: var(--fg-muted);
-      letter-spacing: 0.06em; text-transform: uppercase;
-      margin-bottom: 0.7rem; display: flex; justify-content: space-between;
-    }
+    .arc { margin-top: 1rem; background: var(--bg-cell); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.1rem 1.2rem; box-shadow: var(--shadow-card); }
+    .arc-head { font-family: var(--mono); font-size: 0.68rem; color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.7rem; display: flex; justify-content: space-between; }
     .arc svg { width: 100%; height: auto; }
 
+    /* Field Notes */
+    .notes-intro { max-width: 56ch; color: var(--fg-soft); font-size: 1.05rem; line-height: 1.6; margin: 0 0 2.5rem 0; }
+    .notes-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.25rem; }
+    @media (max-width: 960px) { .notes-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) { .notes-grid { grid-template-columns: 1fr; } }
+
+    .note {
+      grid-column: span 2;
+      background: var(--bg-cell); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; box-shadow: var(--shadow-card);
+      transition: transform 320ms var(--ease), box-shadow 320ms var(--ease), border-color 320ms var(--ease);
+      display: flex; flex-direction: column; min-height: 280px;
+      position: relative;
+    }
+    @media (max-width: 960px) { .note { grid-column: span 1; } }
+    .note:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--accent-soft); }
+    /* Subtle hover affordance: tiny ↗ in corner */
+    .note::after {
+      content: "↗"; position: absolute; top: 0.55rem; right: 0.9rem;
+      font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+      opacity: 0; transition: opacity 280ms var(--ease), transform 280ms var(--ease);
+      transform: translate(-4px, 4px);
+      pointer-events: none;
+    }
+    .note:hover::after { opacity: 0.65; transform: translate(0, 0); }
+
+    .note.note-lg { grid-column: span 3; min-height: 380px; }
+    .note.note-xl { grid-column: span 6; min-height: 360px; }
+    @media (max-width: 960px) { .note.note-lg, .note.note-xl { grid-column: span 2; } }
+    @media (max-width: 620px) { .note.note-lg, .note.note-xl { grid-column: span 1; } }
+
+    .note-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.55rem 0.9rem; background: var(--bg-cell-2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: 0.68rem; color: var(--fg-muted); letter-spacing: 0.02em;
+    }
+    .note-head .file { color: var(--fg-soft); }
+    .note-head .kind {
+      font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px;
+      background: var(--accent-faint); color: var(--accent);
+    }
+    .note-body {
+      flex: 1; padding: 0.95rem 1.1rem;
+      font-family: var(--mono); font-size: 0.74rem; line-height: 1.6;
+      color: var(--fg); overflow: hidden;
+    }
+    .note-body pre { margin: 0; font-family: inherit; font-size: inherit; line-height: inherit; white-space: pre; overflow-x: auto; max-width: 100%; }
+
+    .freshness-row {
+      display: grid; grid-template-columns: 1.4fr 0.9fr auto;
+      gap: 0.5rem; padding: 0.35rem 0; align-items: center;
+      border-bottom: 1px dashed var(--border-soft); font-size: 0.72rem;
+    }
+    .freshness-row:last-child { border-bottom: none; }
+    .freshness-row .src { color: var(--fg); }
+    .freshness-row .ago { color: var(--fg-muted); }
+    .freshness-row .st { font-size: 0.66rem; padding: 1px 7px; border-radius: 4px; letter-spacing: 0.04em; }
+    .st.ok { color: var(--green); background: rgba(90, 122, 62, 0.12); }
+    .st.warn { color: var(--orange); background: rgba(201, 101, 31, 0.12); }
+    .st.err { color: var(--red); background: rgba(168, 51, 51, 0.12); }
+
+    .runprof svg, .exposures svg, .collineage svg { width: 100%; height: auto; }
+    .collineage { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    @media (max-width: 760px) {
+      .collineage svg { min-width: 720px; }
+      .exposures svg { min-width: 340px; }
+      .runprof svg { min-width: 340px; }
+    }
+    /* Field Notes layout — adjust columns at intermediate widths so 6-col grid degrades sanely */
+    @media (max-width: 760px) {
+      .notes-grid { grid-template-columns: 1fr; }
+      .note, .note.note-lg, .note.note-xl { grid-column: span 1; }
+    }
+
+    /* dbt docs specimen */
+    .docs-pane { display: flex; flex-direction: column; gap: 0.85rem; padding: 1rem 1.1rem; font-family: var(--mono); font-size: 0.72rem; color: var(--fg); }
+    .doc-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-soft); }
+    .doc-model-name { font-family: var(--serif); font-size: 1.35rem; font-weight: 500; color: var(--fg); letter-spacing: -0.01em; line-height: 1.1; font-variation-settings: "opsz" 48; }
+    .doc-fqn { color: var(--fg-muted); font-size: 0.68rem; letter-spacing: 0.02em; margin-top: 0.2rem; }
+    .doc-badges { display: flex; gap: 0.35rem; flex-shrink: 0; }
+    .doc-badge { font-size: 0.62rem; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+    .doc-badge.inc { background: var(--accent-faint); color: var(--accent); }
+    .doc-badge.ok { background: rgba(90, 122, 62, 0.14); color: var(--green); }
+    .doc-section { display: flex; flex-direction: column; gap: 0.4rem; }
+    .doc-label { font-size: 0.6rem; color: var(--fg-muted); letter-spacing: 0.10em; text-transform: uppercase; font-weight: 500; }
+    .doc-text { color: var(--fg-soft); line-height: 1.5; font-size: 0.74rem; }
+    .doc-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 0.9rem; font-size: 0.7rem; }
+    .doc-meta-grid > div { display: flex; justify-content: space-between; gap: 0.5rem; }
+    .doc-meta-grid .k { color: var(--fg-muted); }
+    .doc-meta-grid .v { color: var(--accent); }
+    table.doc-cols { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
+    table.doc-cols th { color: var(--fg-muted); font-weight: 500; text-align: left; padding: 0.3rem 0; border-bottom: 1px solid var(--border-soft); letter-spacing: 0.04em; }
+    table.doc-cols td { padding: 0.32rem 0; border-bottom: 1px dashed var(--border-soft); vertical-align: top; }
+    table.doc-cols tr:last-child td { border-bottom: none; }
+    table.doc-cols td:nth-child(1) { color: var(--fg); }
+    table.doc-cols td:nth-child(2) { color: var(--orange); }
+    table.doc-cols td:nth-child(3) { color: var(--teal); font-size: 0.66rem; }
+    .doc-lineage-line { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; font-size: 0.7rem; }
+    .lineage-pill { padding: 4px 9px; border-radius: 999px; font-size: 0.68rem; border: 1px solid var(--border); background: var(--bg-cell-2); }
+    .lineage-pill.self { background: var(--accent); color: #FBF8F1; border-color: var(--accent); font-weight: 500; }
+    .lineage-arrow { color: var(--fg-muted); font-family: var(--mono); }
+
+    /* Looker explore */
+    .explore-pane { padding: 0; flex: 1; display: flex; flex-direction: column; }
+    .explore-grid { display: grid; grid-template-columns: 180px 1fr; flex: 1; min-height: 320px; }
+    @media (max-width: 540px) { .explore-grid { grid-template-columns: 1fr; } }
+    .explore-tree { background: var(--bg-cell-2); border-right: 1px solid var(--border-soft); padding: 0.7rem 0.75rem; font-family: var(--mono); font-size: 0.7rem; color: var(--fg); display: flex; flex-direction: column; gap: 0.2rem; }
+    @media (max-width: 540px) { .explore-tree { border-right: none; border-bottom: 1px solid var(--border-soft); } }
+    .explore-tree-head { font-size: 0.6rem; color: var(--fg-muted); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .tree-item { display: flex; align-items: center; gap: 0.35rem; cursor: default; padding: 1px 0; }
+    .tree-item.open .tree-toggle { color: var(--accent); }
+    .tree-toggle { font-size: 0.6rem; color: var(--fg-muted); width: 10px; display: inline-block; }
+    .tree-sub { padding-left: 0.8rem; display: flex; flex-direction: column; gap: 0.1rem; }
+    .tree-leaf { padding: 1px 4px; border-radius: 3px; color: var(--fg-soft); font-size: 0.68rem; transition: background 180ms var(--ease); }
+    .tree-leaf.selected { background: var(--accent-faint); color: var(--accent); font-weight: 500; }
+    .explore-main { padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.7rem; font-family: var(--mono); font-size: 0.7rem; }
+    .explore-section { display: flex; flex-direction: column; gap: 0.35rem; }
+    .explore-label { font-size: 0.6rem; color: var(--fg-muted); letter-spacing: 0.10em; text-transform: uppercase; }
+    .selected-list { display: flex; flex-direction: column; gap: 0.2rem; padding-left: 0.4rem; }
+    .selected-list .sf { color: var(--fg); }
+    .selected-list .sf .ico { display: inline-block; width: 12px; color: var(--accent); font-weight: 600; }
+    .selected-list .sf .meta { color: var(--fg-muted); font-size: 0.62rem; padding-left: 0.4rem; }
+    .explore-filter { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.55rem; background: var(--bg-cell-2); border: 1px solid var(--border-soft); border-radius: 4px; align-self: flex-start; font-size: 0.68rem; }
+    .ef-field { color: var(--accent); font-weight: 500; }
+    .ef-op { color: var(--fg-muted); }
+    .ef-val { color: var(--red); background: rgba(168, 51, 51, 0.12); padding: 1px 6px; border-radius: 3px; font-size: 0.66rem; }
+    table.explore-result { width: 100%; border-collapse: collapse; font-size: 0.68rem; }
+    table.explore-result th, table.explore-result td { padding: 0.35rem 0.5rem; text-align: left; border-bottom: 1px dashed var(--border-soft); }
+    table.explore-result th { color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em; }
+    table.explore-result tr:last-child td { border-bottom: none; }
+    table.explore-result td:nth-child(2), table.explore-result td:nth-child(3) { font-variant-numeric: tabular-nums; color: var(--fg); }
+
+    /* === NEW: PR diff specimen === */
+    .pr-pane { display: flex; flex-direction: column; flex: 1; }
+    .pr-meta {
+      padding: 0.7rem 1rem; border-bottom: 1px solid var(--border-soft);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap;
+      background: var(--bg-cell-2);
+    }
+    .pr-title { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .pr-num { font-family: var(--mono); font-size: 0.72rem; color: var(--fg-muted); }
+    .pr-name { font-family: var(--mono); font-size: 0.78rem; color: var(--fg); font-weight: 500; }
+    .pr-status {
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px; font-weight: 500;
+      background: rgba(90, 122, 62, 0.14); color: var(--green);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+    }
+    .pr-status::before { content: "✓"; font-size: 0.7rem; }
+    .pr-stats {
+      padding: 0.4rem 1rem; font-family: var(--mono); font-size: 0.66rem;
+      color: var(--fg-muted); letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border-soft);
+      display: flex; gap: 0.8rem; flex-wrap: wrap;
+    }
+    .pr-stats .add { color: var(--green); }
+    .pr-stats .rem { color: var(--red); }
+    .pr-files { flex: 1; overflow: hidden; }
+    .pr-file {
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .pr-file:last-child { border-bottom: none; }
+    .pr-file-head {
+      padding: 0.5rem 1rem; background: var(--bg-cell-3);
+      font-family: var(--mono); font-size: 0.66rem; color: var(--fg-soft);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .pr-file-head .delta { font-size: 0.62rem; color: var(--fg-muted); }
+    .pr-diff {
+      font-family: var(--mono); font-size: 0.66rem; line-height: 1.55;
+      padding: 0.3rem 0;
+    }
+    .pr-diff-row {
+      display: grid; grid-template-columns: 32px 32px 1fr;
+      gap: 0; padding: 0 0;
+    }
+    @media (max-width: 540px) {
+      .pr-diff-row { grid-template-columns: 24px 24px 1fr; }
+      .pr-diff-row .ln { font-size: 0.58rem; padding: 0 0.3rem; }
+      .pr-diff-row .code { font-size: 0.62rem; padding: 0 0.4rem; }
+    }
+    .pr-diff-row .ln {
+      text-align: right; padding: 0 0.5rem; color: var(--fg-faint);
+      font-size: 0.62rem; user-select: none;
+    }
+    .pr-diff-row .code {
+      padding: 0 0.6rem;
+      color: var(--fg);
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .pr-diff-row.add { background: rgba(90, 122, 62, 0.07); }
+    .pr-diff-row.add .ln { color: var(--green); background: rgba(90, 122, 62, 0.12); }
+    .pr-diff-row.add .code::before { content: "+ "; color: var(--green); font-weight: 600; }
+    .pr-diff-row.rem { background: rgba(168, 51, 51, 0.06); }
+    .pr-diff-row.rem .ln { color: var(--red); background: rgba(168, 51, 51, 0.10); }
+    .pr-diff-row.rem .code::before { content: "− "; color: var(--red); font-weight: 600; }
+    .pr-diff-row.ctx .code::before { content: "  "; }
+
+    /* === NEW: Column-level lineage === */
+    .collineage svg { padding: 0.4rem; }
+
+    /* === Hex notebook specimen === */
+    .hex-pane { padding: 0; flex: 1; display: flex; flex-direction: column; }
+    .hex-grid { display: grid; grid-template-columns: 200px 1fr; flex: 1; min-height: 480px; }
+    @media (max-width: 760px) { .hex-grid { grid-template-columns: 1fr; } }
+
+    .hex-rail {
+      background: var(--bg-cell-2); border-right: 1px solid var(--border-soft);
+      padding: 0.7rem 0.75rem 0.6rem;
+      font-family: var(--mono); font-size: 0.7rem;
+      display: flex; flex-direction: column; gap: 0.25rem;
+    }
+    @media (max-width: 760px) {
+      .hex-rail { border-right: none; border-bottom: 1px solid var(--border-soft); flex-direction: row; flex-wrap: wrap; gap: 0.35rem; padding: 0.6rem 0.75rem; }
+      .hex-rail-head, .hex-rail-foot { width: 100%; }
+    }
+    .hex-rail-head { font-size: 0.6rem; color: var(--fg-muted); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 0.45rem; }
+    .hex-cell-item {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.28rem 0.4rem; border-radius: 4px;
+      color: var(--fg-soft); cursor: default;
+      transition: background 180ms var(--ease);
+    }
+    .hex-cell-item:hover { background: rgba(217, 210, 192, 0.30); }
+    .hex-cell-item.active { background: var(--accent-faint); color: var(--accent); }
+    .hex-cnum-r { color: var(--fg-faint); font-size: 0.62rem; min-width: 12px; }
+    .hex-ctype-r {
+      font-size: 0.58rem; padding: 1px 5px; border-radius: 3px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      flex-shrink: 0; font-weight: 500;
+    }
+    .hex-ctype-r.input { background: rgba(91, 63, 168, 0.16); color: var(--accent-2); }
+    .hex-ctype-r.sql { background: rgba(47, 93, 84, 0.16); color: var(--teal); }
+    .hex-ctype-r.tbl { background: rgba(201, 101, 31, 0.14); color: var(--orange); }
+    .hex-ctype-r.chart { background: rgba(90, 122, 62, 0.14); color: var(--green); }
+    .hex-ctype-r.md { background: rgba(126, 119, 110, 0.18); color: var(--fg-soft); }
+    .hex-cname { color: var(--fg); font-size: 0.66rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hex-rail-foot {
+      margin-top: auto; padding-top: 0.6rem; border-top: 1px dashed var(--border-soft);
+      font-size: 0.6rem; color: var(--fg-muted);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .hex-status-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+      animation: compilePulse 2.4s ease-in-out infinite;
+    }
+
+    .hex-main {
+      padding: 0.75rem 0.9rem; display: flex; flex-direction: column; gap: 0.6rem;
+      font-family: var(--mono); font-size: 0.7rem;
+    }
+    .hex-cell {
+      background: var(--bg-cell); border: 1px solid var(--border-soft);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .hex-cell-head {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.32rem 0.6rem; background: var(--bg-cell-2);
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 0.62rem; color: var(--fg-muted);
+      flex-wrap: wrap;
+    }
+    .hex-cnum { color: var(--accent); font-weight: 600; }
+    .hex-ctype-tag {
+      font-size: 0.56rem; padding: 1px 5px; border-radius: 3px;
+      letter-spacing: 0.06em; font-weight: 600;
+    }
+    .hex-ctype-tag.input { background: rgba(91, 63, 168, 0.16); color: var(--accent-2); }
+    .hex-ctype-tag.sql { background: rgba(47, 93, 84, 0.16); color: var(--teal); }
+    .hex-ctype-tag.tbl { background: rgba(201, 101, 31, 0.14); color: var(--orange); }
+    .hex-ctype-tag.chart { background: rgba(90, 122, 62, 0.14); color: var(--green); }
+    .hex-cvar { color: var(--accent); font-weight: 500; }
+    .hex-csource { color: var(--fg-muted); font-size: 0.6rem; }
+    .hex-ctime { color: var(--fg-faint); margin-left: auto; font-size: 0.6rem; }
+
+    .hex-cell-body { padding: 0.55rem 0.75rem; }
+    .hex-input-row {
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .hex-label { color: var(--fg-muted); font-size: 0.62rem; letter-spacing: 0.04em; }
+    .hex-select {
+      background: var(--bg-cell-2); border: 1px solid var(--border-soft);
+      padding: 0.25rem 0.55rem; border-radius: 4px;
+      color: var(--fg); font-size: 0.66rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      cursor: default;
+    }
+    .hex-caret { color: var(--fg-muted); font-size: 0.6rem; }
+    .hex-code-body { padding: 0.5rem 0.75rem; overflow-x: auto; }
+    .hex-code {
+      margin: 0; font-family: inherit; font-size: 0.7rem; line-height: 1.6;
+      color: var(--fg); white-space: pre;
+    }
+    .hex-jinja {
+      background: rgba(91, 63, 168, 0.10); color: var(--accent-2);
+      padding: 1px 4px; border-radius: 2px; font-weight: 500;
+    }
+    .hex-table-body { padding: 0; }
+    table.hex-result { width: 100%; border-collapse: collapse; font-size: 0.66rem; }
+    table.hex-result th, table.hex-result td { padding: 0.32rem 0.6rem; text-align: left; border-bottom: 1px dashed var(--border-soft); }
+    table.hex-result th { color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em; background: rgba(217, 210, 192, 0.16); font-size: 0.6rem; text-transform: uppercase; }
+    table.hex-result tr:last-child td { border-bottom: none; }
+    table.hex-result td:nth-child(2),
+    table.hex-result td:nth-child(3),
+    table.hex-result td:nth-child(4) { font-variant-numeric: tabular-nums; }
+    table.hex-result td.risk { color: var(--red); }
+    .hex-chart-body { padding: 0.55rem 0.75rem; }
+    .hex-chart-body svg { width: 100%; height: auto; }
+
+    /* === Stack === */
     .stack-intro { max-width: 56ch; color: var(--fg-soft); font-size: 1.05rem; line-height: 1.6; margin: 0 0 2.5rem 0; }
     .pipeline {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
       border: 1px solid var(--border); border-radius: var(--radius-lg);
       overflow: hidden; background: var(--bg-cell); margin-bottom: 2rem; position: relative;
+      box-shadow: var(--shadow-card);
     }
     @media (max-width: 880px) { .pipeline { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 520px) { .pipeline { grid-template-columns: 1fr; } }
@@ -359,73 +751,43 @@
       .pipeline > .pipe-stage { border-right: none; border-bottom: 1px solid var(--border-soft); }
       .pipeline > .pipe-stage:last-child { border-bottom: none; }
     }
-    .pipe-stage .arrow-r {
-      position: absolute; right: -8px; top: 50%; transform: translateY(-50%);
-      width: 16px; height: 16px; background: var(--bg-cell);
-      border-top: 1px solid var(--border-soft); border-right: 1px solid var(--border-soft);
-      rotate: 45deg; z-index: 2;
-    }
+    .pipe-stage .arrow-r { position: absolute; right: -8px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; background: var(--bg-cell); border-top: 1px solid var(--border-soft); border-right: 1px solid var(--border-soft); rotate: 45deg; z-index: 2; }
     .pipeline > .pipe-stage:nth-child(4n) .arrow-r { display: none; }
     @media (max-width: 880px) { .pipeline > .pipe-stage:nth-child(2n) .arrow-r { display: none; } }
     @media (max-width: 520px) { .arrow-r { display: none; } }
 
     .pipe-stage .stage-num { font-family: var(--mono); font-size: 0.66rem; color: var(--accent); letter-spacing: 0.08em; font-weight: 600; }
-    .pipe-stage .stage-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; margin: 0.4rem 0 0.8rem; letter-spacing: -0.01em; }
+    .pipe-stage .stage-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; margin: 0.4rem 0 0.8rem; letter-spacing: -0.01em; font-variation-settings: "opsz" 36; }
     .pipe-stage .stage-tools { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-    .pipe-stage .stage-tools span {
-      font-family: var(--mono); font-size: 0.7rem; color: var(--fg-soft);
-      padding: 0.18rem 0.5rem; background: rgba(217, 210, 192, 0.3); border-radius: var(--radius-sm);
-    }
+    .pipe-stage .stage-tools span { font-family: var(--mono); font-size: 0.7rem; color: var(--fg-soft); padding: 0.18rem 0.5rem; background: rgba(217, 210, 192, 0.32); border-radius: var(--radius-sm); }
 
     .extras-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     @media (max-width: 720px) { .extras-grid { grid-template-columns: 1fr; } }
-    .extra {
-      background: var(--bg-cell); border: 1px solid var(--border-soft);
-      border-radius: var(--radius); padding: 1rem 1.15rem;
-    }
-    .extra h4 {
-      font-family: var(--mono); font-size: 0.7rem; color: var(--fg-muted);
-      letter-spacing: 0.06em; text-transform: uppercase;
-      margin: 0 0 0.55rem; font-weight: 500;
-    }
-    .extra .vals {
-      font-family: var(--mono); font-size: 0.82rem; color: var(--fg);
-      display: flex; flex-wrap: wrap; gap: 0.55rem;
-    }
+    .extra { background: var(--bg-cell); border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 1rem 1.15rem; }
+    .extra h4 { font-family: var(--mono); font-size: 0.7rem; color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 0.55rem; font-weight: 500; }
+    .extra .vals { font-family: var(--mono); font-size: 0.82rem; color: var(--fg); display: flex; flex-wrap: wrap; gap: 0.55rem; }
     .extra .vals span { color: var(--fg-soft); }
 
+    /* Projects */
     .projects-intro { max-width: 62ch; font-size: 1.08rem; color: var(--fg-soft); line-height: 1.6; margin: 0 0 2.75rem 0; }
     .proj-list { display: grid; gap: 1.5rem; }
     .proj {
       background: var(--bg-cell); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 1.85rem 1.95rem;
-      transition: border-color 280ms var(--ease), transform 280ms var(--ease), box-shadow 280ms var(--ease);
+      transition: border-color 320ms var(--ease), transform 320ms var(--ease), box-shadow 320ms var(--ease);
       position: relative; overflow: hidden;
-      display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start;
+      display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: start;
+      box-shadow: var(--shadow-card);
     }
-    @media (max-width: 840px) { .proj { grid-template-columns: 1fr; gap: 1.5rem; } }
-    .proj::before {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(120deg, rgba(91, 63, 168, 0) 0%, rgba(91, 63, 168, 0.05) 100%);
-      opacity: 0; transition: opacity 320ms var(--ease); pointer-events: none;
-    }
-    .proj:hover {
-      border-color: var(--accent); transform: translateY(-3px);
-      box-shadow: 0 24px 50px -28px rgba(62, 43, 112, 0.35), 0 4px 12px -6px rgba(62, 43, 112, 0.10);
-    }
+    @media (max-width: 880px) { .proj { grid-template-columns: 1fr; gap: 1.5rem; } }
+    .proj::before { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(91, 63, 168, 0) 0%, rgba(91, 63, 168, 0.05) 100%); opacity: 0; transition: opacity 360ms var(--ease); pointer-events: none; }
+    .proj:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-hover); }
     .proj:hover::before { opacity: 1; }
 
     .proj-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.85rem; flex-wrap: wrap; }
     .proj-id { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--fg-muted); text-transform: uppercase; margin-bottom: 0.35rem; }
-    .proj h3 {
-      font-family: var(--serif); font-weight: 500; font-size: 1.7rem; line-height: 1.15;
-      margin: 0; letter-spacing: -0.015em;
-    }
-    .status {
-      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em;
-      text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 999px;
-      display: inline-flex; align-items: center; gap: 0.45rem; white-space: nowrap;
-    }
+    .proj h3 { font-family: var(--serif); font-weight: 500; font-size: 1.7rem; line-height: 1.15; margin: 0; letter-spacing: -0.02em; font-variation-settings: "opsz" 72; }
+    .status { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.45rem; white-space: nowrap; }
     .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
     .status.planning { color: var(--fg-muted); background: var(--bg-soft); border: 1px solid var(--border); }
     .status.planning::before { background: var(--fg-muted); }
@@ -437,40 +799,41 @@
 
     .proj p.desc { color: var(--fg-soft); font-size: 0.98rem; line-height: 1.6; margin: 0 0 1.2rem 0; max-width: 60ch; }
     .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
-    .tag {
-      font-family: var(--mono); font-size: 0.7rem; color: var(--accent);
-      background: rgba(62, 43, 112, 0.07); padding: 0.22rem 0.58rem; border-radius: 4px;
-    }
+    .tag { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); background: var(--accent-faint); padding: 0.22rem 0.58rem; border-radius: 4px; }
     .proj-links { display: flex; gap: 1.4rem; align-items: center; }
-    .proj-links a {
-      font-family: var(--mono); font-size: 0.78rem; color: var(--accent);
-      letter-spacing: 0.02em; border-bottom: 1px solid transparent;
-      transition: border-color 220ms var(--ease);
-    }
+    .proj-links a { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); letter-spacing: 0.02em; border-bottom: 1px solid transparent; transition: border-color 220ms var(--ease); }
     .proj-links a:hover { border-bottom-color: var(--accent); }
     .proj-links .disabled { color: var(--fg-muted); cursor: not-allowed; }
     .proj-links .disabled:hover { border-bottom-color: transparent; }
 
-    .proj-preview {
-      background: var(--bg-cell-2); border: 1px solid var(--border-soft);
-      border-radius: var(--radius); padding: 1rem; align-self: stretch;
-      display: flex; flex-direction: column; min-height: 220px;
-    }
-    .proj-preview-head {
-      font-family: var(--mono); font-size: 0.66rem; color: var(--fg-muted);
-      letter-spacing: 0.06em; text-transform: uppercase;
-      margin-bottom: 0.7rem; display: flex; justify-content: space-between;
-    }
-    .proj-preview svg, .proj-preview .preview-body { flex: 1; width: 100%; }
-    .preview-body {
-      font-family: var(--mono); font-size: 0.74rem; line-height: 1.6;
-      color: var(--fg-soft); display: flex; flex-direction: column; gap: 0.45rem;
-    }
-    .preview-body .msg { padding: 0.55rem 0.7rem; border-radius: var(--radius); max-width: 92%; }
-    .preview-body .msg.user { background: rgba(62, 43, 112, 0.08); align-self: flex-end; color: var(--fg); }
-    .preview-body .msg.ai { background: var(--bg-cell); border: 1px solid var(--border-soft); align-self: flex-start; color: var(--fg-soft); }
-    .preview-body .msg .src { color: var(--accent); font-weight: 500; font-size: 0.68rem; margin-top: 0.3rem; display: block; }
+    .proj-preview { background: var(--bg-cell-2); border: 1px solid var(--border-soft); border-radius: var(--radius); align-self: stretch; display: flex; flex-direction: column; min-height: 240px; overflow: hidden; }
+    .proj-preview-head { font-family: var(--mono); font-size: 0.66rem; color: var(--fg-muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft); display: flex; justify-content: space-between; align-items: center; background: var(--bg-cell-3); }
+    .proj-tabs { display: flex; background: var(--bg-cell-2); padding: 0 0.35rem; border-bottom: 1px solid var(--border-soft); }
+    .ptab { font-family: var(--mono); font-size: 0.68rem; padding: 0.55rem 0.65rem; color: var(--fg-muted); background: none; border: none; cursor: pointer; letter-spacing: 0.02em; border-bottom: 2px solid transparent; transition: color 200ms var(--ease), border-color 200ms var(--ease); margin-bottom: -1px; }
+    .ptab:hover { color: var(--fg); }
+    .ptab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .ppane { display: none; padding: 0.85rem 0.9rem; flex: 1; }
+    .ppane.active { display: flex; flex-direction: column; }
+    .ppane svg { flex: 1; width: 100%; height: auto; }
 
+    .preview-body { font-family: var(--mono); font-size: 0.72rem; line-height: 1.6; color: var(--fg-soft); display: flex; flex-direction: column; gap: 0.4rem; }
+    .preview-body .msg { padding: 0.55rem 0.7rem; border-radius: var(--radius); max-width: 92%; }
+    .preview-body .msg.user { background: var(--accent-faint); align-self: flex-end; color: var(--fg); }
+    .preview-body .msg.ai { background: var(--bg-cell); border: 1px solid var(--border-soft); align-self: flex-start; color: var(--fg-soft); }
+    .preview-body .msg .src { color: var(--accent); font-weight: 500; font-size: 0.66rem; margin-top: 0.3rem; display: block; }
+
+    .ctx-list { font-family: var(--mono); font-size: 0.7rem; line-height: 1.6; }
+    .ctx-row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.3rem 0; border-bottom: 1px dashed var(--border-soft); }
+    .ctx-row:last-child { border-bottom: none; }
+    .ctx-row .nm { color: var(--accent); }
+    .ctx-row .sc { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+    .ctx-row .typ { color: var(--orange); font-size: 0.62rem; padding: 1px 5px; background: rgba(201, 101, 31, 0.10); border-radius: 3px; }
+
+    .ground-pane { font-family: var(--mono); font-size: 0.72rem; line-height: 1.6; color: var(--fg); }
+    .ground-pane .label { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.62rem; margin-top: 0.6rem; margin-bottom: 0.25rem; }
+    .ground-pane .label:first-child { margin-top: 0; }
+
+    /* Contact */
     .contact-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2.5rem, 4vw, 4rem); align-items: center; }
     @media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; align-items: start; } }
     .contact-body { font-size: 1.08rem; color: var(--fg-soft); line-height: 1.6; max-width: 44ch; }
@@ -481,28 +844,36 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.1rem 1.3rem; background: var(--bg-cell); border: 1px solid var(--border);
       border-radius: var(--radius); font-family: var(--mono); font-size: 0.85rem;
-      transition: all 240ms var(--ease); position: relative; overflow: hidden;
+      transition: all 280ms var(--ease); position: relative; overflow: hidden;
+      box-shadow: var(--shadow-card);
     }
-    .contact-links a::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(90deg, rgba(62, 43, 112, 0) 0%, rgba(62, 43, 112, 0.06) 100%);
-      opacity: 0; transition: opacity 280ms var(--ease);
-    }
-    .contact-links a:hover { border-color: var(--accent); transform: translateX(4px); }
+    .contact-links a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(62, 43, 112, 0) 0%, rgba(62, 43, 112, 0.07) 100%); opacity: 0; transition: opacity 320ms var(--ease); }
+    .contact-links a:hover { border-color: var(--accent); transform: translateX(4px); box-shadow: var(--shadow-hover); }
     .contact-links a:hover::after { opacity: 1; }
     .contact-links .label { color: var(--fg-muted); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
     .contact-links .val { color: var(--fg); font-weight: 500; }
     .contact-links a:hover .val { color: var(--accent); }
-    .contact-links a span.arr { color: var(--fg-muted); transition: transform 240ms var(--ease), color 240ms var(--ease); position: relative; z-index: 1; }
+    .contact-links a span.arr { color: var(--fg-muted); transition: transform 280ms var(--ease), color 280ms var(--ease); position: relative; z-index: 1; }
     .contact-links a:hover span.arr { transform: translateX(4px); color: var(--accent); }
 
-    footer { border-top: 1px solid var(--border-soft); padding: 2rem 0 2.5rem 0; font-family: var(--mono); font-size: 0.74rem; color: var(--fg-muted); }
-    footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    footer .build { display: inline-flex; align-items: center; gap: 0.5rem; }
-    footer .build::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    /* Footer */
+    footer { border-top: 1px solid var(--border-soft); padding: 2.5rem 0 3rem 0; font-family: var(--mono); font-size: 0.74rem; color: var(--fg-muted); }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr; } }
+    .footer-info { display: flex; flex-direction: column; gap: 0.4rem; }
+    .footer-info .meta { color: var(--fg-soft); }
+    .footer-log { background: var(--bg-cell); border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 0.75rem 0.9rem; font-size: 0.66rem; line-height: 1.7; }
+    .footer-log .log-head { color: var(--fg-muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.6rem; margin-bottom: 0.4rem; }
+    .footer-log .log-row { display: flex; gap: 0.5rem; color: var(--fg-soft); }
+    .footer-log .log-row .ts { color: var(--fg-faint); font-variant-numeric: tabular-nums; min-width: 5.5rem; flex-shrink: 0; }
+    .footer-log .log-row .ev { color: var(--green); flex-shrink: 0; width: 4.5rem; }
+    .footer-log .log-row .ev.warn { color: var(--orange); }
+    .footer-log .log-row .ev.info { color: var(--accent); }
+    .footer-log .log-row .msg-t { color: var(--fg); }
 
+    /* Reveals */
     @media (prefers-reduced-motion: no-preference) {
-      .reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+      .reveal { opacity: 0; transform: translateY(20px); transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out); }
       .reveal.in { opacity: 1; transform: translateY(0); }
       .reveal.d1 { transition-delay: 80ms; }
       .reveal.d2 { transition-delay: 180ms; }
@@ -510,16 +881,67 @@
       .reveal.d4 { transition-delay: 380ms; }
       .reveal.d5 { transition-delay: 480ms; }
     }
+
+    @media (max-width: 480px) {
+      .wrap { padding: 0 1.1rem; }
+      .hero { padding-top: 2rem; padding-bottom: 3rem; }
+      .hero h1 { font-size: clamp(2.6rem, 12vw, 3.8rem); }
+      .hero p.lede { font-size: 1.02rem; }
+      .ctas { flex-direction: column; align-items: stretch; }
+      .ctas .btn { justify-content: center; }
+      h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+      .pullquote { font-size: 1rem; padding: 0.9rem 1rem 0.9rem 1.1rem; }
+      .cell-head { padding: 0.5rem 0.75rem; gap: 0.4rem; }
+      .cell-head .path { font-size: 0.58rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 55vw; }
+      .cell-head .badge { font-size: 0.58rem; }
+      .cell-head .dots span { width: 7px; height: 7px; }
+      .data-cell pre.code { font-size: 0.66rem; padding: 0.85rem 0.9rem; }
+      .tabs { padding: 0 0.25rem; }
+      .tab { padding: 0.55rem 0.6rem; font-size: 0.66rem; }
+      table.df th, table.df td { padding: 0.4rem 0.7rem; font-size: 0.66rem; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .metric { padding: 1rem 1.1rem; }
+      .metric .v { font-size: 2rem; }
+      .freshness-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) auto; font-size: 0.66rem; }
+      .doc-meta-grid { grid-template-columns: 1fr; }
+      .proj { padding: 1.3rem 1.3rem; }
+      .proj h3 { font-size: 1.4rem; }
+      .contact-links a { padding: 0.95rem 1.05rem; font-size: 0.78rem; }
+    }
+    @media (max-width: 380px) {
+      .pipe-stage { padding: 1rem 1.05rem; }
+      .note-body { padding: 0.8rem 0.9rem; font-size: 0.7rem; }
+    }
+
+    .mono { font-family: var(--mono); }
+
+    @media print {
+      body::before, body::after, .cursor-glow, nav.top, .scroll-progress, .section-toc { display: none !important; }
+      section { page-break-inside: avoid; padding: 1.5rem 0; }
+      .data-cell, .note, .proj, .metrics, .arc { box-shadow: none; }
+      a { text-decoration: underline; }
+    }
   </style>
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
   <div class="cursor-glow" id="cursorGlow"></div>
+
+  <div class="section-toc" id="sectionToc">
+    <a href="#hero" class="stoc" data-section="hero"><span class="lbl">intro</span></a>
+    <a href="#work" class="stoc" data-section="work"><span class="lbl">about</span></a>
+    <a href="#notes" class="stoc" data-section="notes"><span class="lbl">field notes</span></a>
+    <a href="#stack" class="stoc" data-section="stack"><span class="lbl">stack</span></a>
+    <a href="#projects" class="stoc" data-section="projects"><span class="lbl">projects</span></a>
+    <a href="#contact" class="stoc" data-section="contact"><span class="lbl">contact</span></a>
+  </div>
 
   <nav class="top" id="topnav">
     <div class="wrap">
       <a href="#top" class="mark"><span class="dot"></span>xander_bennett.io</a>
       <div class="links">
         <a href="#work">work</a>
+        <a href="#notes">field notes</a>
         <a href="#stack">stack</a>
         <a href="#projects">projects</a>
         <a href="#contact">contact</a>
@@ -541,19 +963,19 @@
             </div>
           </div>
 
-          <div class="data-cell reveal in d4">
+          <div class="data-cell reveal in d4" id="heroCell">
             <div class="cell-head">
               <div style="display:flex; align-items:center; gap:0.8rem;">
                 <div class="dots"><span></span><span></span><span></span></div>
                 <span class="path">~/gtm/models/marts/account_health.sql</span>
               </div>
-              <span class="badge">14 tests · 4ms</span>
+              <span class="badge" id="heroBadge">14 tests · 4ms</span>
             </div>
             <div class="tabs" role="tablist">
-              <button class="tab active" data-pane="model" role="tab"><span class="ic"></span>model</button>
-              <button class="tab" data-pane="schema" role="tab"><span class="ic"></span>schema</button>
-              <button class="tab" data-pane="lineage" role="tab"><span class="ic"></span>lineage</button>
-              <button class="tab" data-pane="tests" role="tab"><span class="ic"></span>tests</button>
+              <button class="tab active" data-pane="model" data-badge="14 tests · 4ms"><span class="ic"></span>model</button>
+              <button class="tab" data-pane="schema" data-badge="3 tables · 12 cols"><span class="ic"></span>schema</button>
+              <button class="tab" data-pane="lineage" data-badge="9 models · 4 layers"><span class="ic"></span>lineage</button>
+              <button class="tab" data-pane="tests" data-badge="6 passing · 0 fails"><span class="ic"></span>tests</button>
             </div>
 
             <div class="panes">
@@ -614,42 +1036,31 @@
               </div>
 
               <div class="pane" id="pane-lineage">
-                <div class="lineage">
+                <div class="lineage draw-on-reveal">
                   <svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#7E776E"/>
-                      </marker>
+                      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7E776E"/></marker>
                     </defs>
                     <g font-family="JetBrains Mono" font-size="10" fill="#4A4540">
-                      <rect x="20" y="30" width="100" height="34" rx="4" fill="#F4EFE5" stroke="#D9D2C0"/>
-                      <text x="70" y="50" text-anchor="middle">salesforce.accounts</text>
-                      <rect x="20" y="100" width="100" height="34" rx="4" fill="#F4EFE5" stroke="#D9D2C0"/>
-                      <text x="70" y="120" text-anchor="middle">salesforce.activities</text>
-                      <rect x="20" y="170" width="100" height="34" rx="4" fill="#F4EFE5" stroke="#D9D2C0"/>
-                      <text x="70" y="190" text-anchor="middle">salesforce.opportunities</text>
+                      <rect x="20" y="30" width="100" height="34" rx="4" fill="#F4EFE5" stroke="#D9D2C0"/><text x="70" y="50" text-anchor="middle">salesforce.accounts</text>
+                      <rect x="20" y="100" width="100" height="34" rx="4" fill="#F4EFE5" stroke="#D9D2C0"/><text x="70" y="120" text-anchor="middle">salesforce.activities</text>
+                      <rect x="20" y="170" width="100" height="34" rx="4" fill="#F4EFE5" stroke="#D9D2C0"/><text x="70" y="190" text-anchor="middle">salesforce.opportunities</text>
                       <text x="70" y="230" text-anchor="middle" fill="#7E776E" font-size="9" letter-spacing="1">SOURCES</text>
                     </g>
                     <g font-family="JetBrains Mono" font-size="10" fill="#14110D">
-                      <rect x="160" y="30" width="110" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
-                      <text x="215" y="50" text-anchor="middle">stg_accounts</text>
-                      <rect x="160" y="100" width="110" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
-                      <text x="215" y="120" text-anchor="middle">stg_activities</text>
-                      <rect x="160" y="170" width="110" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
-                      <text x="215" y="190" text-anchor="middle">stg_opportunities</text>
+                      <rect x="160" y="30" width="110" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/><text x="215" y="50" text-anchor="middle">stg_accounts</text>
+                      <rect x="160" y="100" width="110" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/><text x="215" y="120" text-anchor="middle">stg_activities</text>
+                      <rect x="160" y="170" width="110" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/><text x="215" y="190" text-anchor="middle">stg_opportunities</text>
                       <text x="215" y="230" text-anchor="middle" fill="#7E776E" font-size="9" letter-spacing="1">STAGING</text>
                     </g>
                     <g font-family="JetBrains Mono" font-size="10" fill="#14110D">
-                      <rect x="310" y="65" width="140" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
-                      <text x="380" y="85" text-anchor="middle">int_accounts__activity</text>
-                      <rect x="310" y="135" width="140" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
-                      <text x="380" y="155" text-anchor="middle">int_pipeline_metrics</text>
+                      <rect x="310" y="65" width="140" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/><text x="380" y="85" text-anchor="middle">int_accounts__activity</text>
+                      <rect x="310" y="135" width="140" height="34" rx="4" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/><text x="380" y="155" text-anchor="middle">int_pipeline_metrics</text>
                       <text x="380" y="230" text-anchor="middle" fill="#7E776E" font-size="9" letter-spacing="1">INTERMEDIATE</text>
                     </g>
                     <g font-family="JetBrains Mono" font-size="10" fill="#FBF8F1">
-                      <rect x="465" y="100" width="60" height="34" rx="4" fill="#3E2B70" stroke="#3E2B70"/>
-                      <text x="495" y="120" text-anchor="middle">account_health</text>
-                      <text x="495" y="230" text-anchor="middle" fill="#7E776E" font-size="9" letter-spacing="1">MARTS</text>
+                      <rect x="460" y="100" width="65" height="34" rx="4" fill="#3E2B70" stroke="#3E2B70"/><text x="492" y="120" text-anchor="middle">account_health</text>
+                      <text x="492" y="230" text-anchor="middle" fill="#7E776E" font-size="9" letter-spacing="1">MARTS</text>
                     </g>
                     <g stroke="#7E776E" stroke-width="1" fill="none" marker-end="url(#arr)">
                       <path d="M120 47 C 140 47, 140 47, 160 47"/>
@@ -659,8 +1070,8 @@
                       <path d="M270 117 C 290 117, 290 82, 310 82"/>
                       <path d="M270 117 C 290 117, 290 152, 310 152"/>
                       <path d="M270 187 C 290 187, 290 152, 310 152"/>
-                      <path d="M450 82 C 460 82, 460 117, 465 117"/>
-                      <path d="M450 152 C 460 152, 460 117, 465 117"/>
+                      <path d="M450 82 C 455 82, 455 117, 460 117"/>
+                      <path d="M450 152 C 455 152, 455 117, 460 117"/>
                     </g>
                   </svg>
                 </div>
@@ -677,11 +1088,16 @@
                 </div>
               </div>
             </div>
+            <div class="cell-footer">
+              <span class="compile"><span class="compile-dot"></span>last compile · 3.2s</span>
+              <span class="ticker" id="ticker">refreshed 47s ago</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section class="about" id="work">
       <div class="wrap">
         <div class="cell-label reveal"><span class="num">[01]</span><span>about</span><span class="rule"></span></div>
@@ -725,11 +1141,7 @@
               <svg viewBox="0 0 540 100" xmlns="http://www.w3.org/2000/svg">
                 <line x1="20" y1="78" x2="520" y2="78" stroke="#D9D2C0" stroke-width="1"/>
                 <g font-family="JetBrains Mono" font-size="9" fill="#7E776E" text-anchor="middle">
-                  <text x="20" y="94">'18</text>
-                  <text x="145" y="94">'20</text>
-                  <text x="270" y="94">'22</text>
-                  <text x="395" y="94">'24</text>
-                  <text x="520" y="94">'26</text>
+                  <text x="20" y="94">'18</text><text x="145" y="94">'20</text><text x="270" y="94">'22</text><text x="395" y="94">'24</text><text x="520" y="94">'26</text>
                 </g>
                 <g>
                   <rect x="58" y="28" width="123" height="14" rx="2" fill="#8B79C2"/>
@@ -748,12 +1160,736 @@
       </div>
     </section>
 
+    <!-- FIELD NOTES -->
+    <section class="notes" id="notes">
+      <div class="wrap">
+        <div class="cell-label reveal"><span class="num">[02]</span><span>field notes</span><span class="rule"></span></div>
+        <h2 class="reveal d1">The artifacts of <span class="em">the work</span>.</h2>
+        <p class="notes-intro reveal d2">A few of the things I write, deploy, and reach for on a normal day. Not screenshots — actual specimens. The kind of files that live in <code style="font-family:var(--mono);font-size:0.92em;color:var(--accent);">/models</code>, <code style="font-family:var(--mono);font-size:0.92em;color:var(--accent);">/views</code>, and the dbt docs site.</p>
+
+        <div class="notes-grid">
+          <!-- 1. schema.yml -->
+          <article class="note reveal">
+            <div class="note-head">
+              <span class="file">models/marts/_marts.yml</span>
+              <span class="kind">dbt contract</span>
+            </div>
+            <div class="note-body">
+<pre><span class="tok-key">version:</span> <span class="tok-num">2</span>
+<span class="tok-key">models:</span>
+  <span class="tok-list">-</span> <span class="tok-key">name:</span> fct_account_revenue
+    <span class="tok-key">description:</span> <span class="tok-str">"Daily ARR rollup by account"</span>
+    <span class="tok-key">config:</span>
+      <span class="tok-key">materialized:</span> incremental
+      <span class="tok-key">unique_key:</span> account_date_id
+      <span class="tok-key">on_schema_change:</span> append_new_columns
+    <span class="tok-key">contract:</span> {<span class="tok-key">enforced:</span> <span class="tok-bool">true</span>}
+    <span class="tok-key">columns:</span>
+      <span class="tok-list">-</span> <span class="tok-key">name:</span> account_id
+        <span class="tok-key">data_type:</span> string
+        <span class="tok-key">tests:</span> [unique, not_null]
+      <span class="tok-list">-</span> <span class="tok-key">name:</span> arr_usd
+        <span class="tok-key">data_type:</span> numeric(<span class="tok-num">12</span>,<span class="tok-num">2</span>)
+        <span class="tok-key">tests:</span>
+          <span class="tok-list">-</span> not_null
+          <span class="tok-list">-</span> <span class="tok-key">dbt_utils.accepted_range:</span>
+              <span class="tok-key">min_value:</span> <span class="tok-num">0</span></pre>
+            </div>
+          </article>
+
+          <!-- 2. LookML view -->
+          <article class="note reveal">
+            <div class="note-head">
+              <span class="file">views/account_health.view.lkml</span>
+              <span class="kind">LookML</span>
+            </div>
+            <div class="note-body">
+<pre><span class="tok-kw">view:</span> account_health {
+  <span class="tok-kw">sql_table_name:</span> marts.fct_account_health ;;
+
+  <span class="tok-kw">dimension:</span> account_id {
+    <span class="tok-fn">primary_key:</span> yes
+    <span class="tok-fn">sql:</span> ${TABLE}.account_id ;;
+  }
+
+  <span class="tok-kw">dimension:</span> health_tier {
+    <span class="tok-fn">type:</span> string
+    <span class="tok-fn">sql:</span> ${TABLE}.health_tier ;;
+  }
+
+  <span class="tok-kw">measure:</span> total_arr {
+    <span class="tok-fn">type:</span> sum
+    <span class="tok-fn">sql:</span> ${TABLE}.arr_usd ;;
+    <span class="tok-fn">value_format_name:</span> usd_0
+  }
+
+  <span class="tok-kw">measure:</span> at_risk_arr {
+    <span class="tok-fn">type:</span> sum
+    <span class="tok-fn">filters:</span> [health_tier: <span class="tok-str">"at_risk"</span>]
+    <span class="tok-fn">sql:</span> ${TABLE}.arr_usd ;;
+  }
+}</pre>
+            </div>
+          </article>
+
+          <!-- 3. semantic layer metric -->
+          <article class="note reveal">
+            <div class="note-head">
+              <span class="file">models/semantic/gtm_metrics.yml</span>
+              <span class="kind">semantic layer</span>
+            </div>
+            <div class="note-body">
+<pre><span class="tok-key">metrics:</span>
+  <span class="tok-list">-</span> <span class="tok-key">name:</span> stalled_opp_count
+    <span class="tok-key">label:</span> <span class="tok-str">"Stalled Opportunities"</span>
+    <span class="tok-key">description:</span> <span class="tok-str">"Opps idle 30d+"</span>
+    <span class="tok-key">type:</span> simple
+    <span class="tok-key">type_params:</span>
+      <span class="tok-key">measure:</span> opportunity_count
+    <span class="tok-key">filter:</span> <span class="tok-str">|</span>
+      {{ <span class="tok-fn">Dimension</span>(
+        <span class="tok-str">'opportunity__last_activity_days'</span>
+      ) }} <span class="tok-fn">&gt;</span> <span class="tok-num">30</span>
+      <span class="tok-kw">AND</span> {{ <span class="tok-fn">Dimension</span>(
+        <span class="tok-str">'opportunity__stage'</span>
+      ) }} <span class="tok-kw">NOT IN</span> (
+        <span class="tok-str">'closed_won'</span>,
+        <span class="tok-str">'closed_lost'</span>
+      )</pre>
+            </div>
+          </article>
+
+          <!-- 4. freshness -->
+          <article class="note reveal">
+            <div class="note-head">
+              <span class="file">_freshness · live monitor</span>
+              <span class="kind">observability</span>
+            </div>
+            <div class="note-body" style="padding-top: 0.7rem;">
+              <div class="freshness-row" style="border-bottom: 1px solid var(--border-soft); color: var(--fg-muted); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;">
+                <span>source</span><span>last loaded</span><span>status</span>
+              </div>
+              <div class="freshness-row"><span class="src">salesforce.accounts</span><span class="ago">12m ago</span><span class="st ok">fresh</span></div>
+              <div class="freshness-row"><span class="src">salesforce.opportunities</span><span class="ago">8m ago</span><span class="st ok">fresh</span></div>
+              <div class="freshness-row"><span class="src">salesforce.activities</span><span class="ago">14m ago</span><span class="st ok">fresh</span></div>
+              <div class="freshness-row"><span class="src">stripe.invoices</span><span class="ago">47m ago</span><span class="st warn">warn</span></div>
+              <div class="freshness-row"><span class="src">gong.calls</span><span class="ago">2h 12m</span><span class="st warn">warn</span></div>
+              <div class="freshness-row"><span class="src">hubspot.contacts</span><span class="ago">4h 03m</span><span class="st err">stale</span></div>
+            </div>
+          </article>
+
+          <!-- 5. run profile -->
+          <article class="note reveal">
+            <div class="note-head">
+              <span class="file">dbt run · last 24h</span>
+              <span class="kind">performance</span>
+            </div>
+            <div class="note-body runprof" style="padding-top: 0.9rem;">
+              <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+                <g font-family="JetBrains Mono" font-size="9" fill="#4A4540">
+                  <text x="106" y="30" text-anchor="end">stg_accounts</text>
+                  <rect x="110" y="22" width="15" height="11" fill="#8B79C2" rx="1"/>
+                  <text x="130" y="30" fill="#7E776E" font-size="8">0.3s</text>
+                  <text x="106" y="50" text-anchor="end">stg_opportunities</text>
+                  <rect x="110" y="42" width="20" height="11" fill="#8B79C2" rx="1"/>
+                  <text x="135" y="50" fill="#7E776E" font-size="8">0.4s</text>
+                  <text x="106" y="70" text-anchor="end">stg_activities</text>
+                  <rect x="110" y="62" width="25" height="11" fill="#8B79C2" rx="1"/>
+                  <text x="140" y="70" fill="#7E776E" font-size="8">0.5s</text>
+                  <text x="106" y="90" text-anchor="end">int_accounts__activity</text>
+                  <rect x="110" y="82" width="103" height="11" fill="#3E2B70" rx="1"/>
+                  <text x="218" y="90" fill="#7E776E" font-size="8">2.1s</text>
+                  <text x="106" y="110" text-anchor="end">int_pipeline_metrics</text>
+                  <rect x="110" y="102" width="68" height="11" fill="#3E2B70" rx="1"/>
+                  <text x="183" y="110" fill="#7E776E" font-size="8">1.4s</text>
+                  <text x="106" y="130" text-anchor="end" fill="#C9651F">fct_account_revenue</text>
+                  <rect x="110" y="122" width="186" height="11" fill="#C9651F" rx="1"/>
+                  <text x="301" y="130" fill="#C9651F" font-size="8">3.8s</text>
+                  <text x="106" y="150" text-anchor="end">fct_account_health</text>
+                  <rect x="110" y="142" width="44" height="11" fill="#C9651F" rx="1"/>
+                  <text x="159" y="150" fill="#7E776E" font-size="8">0.9s</text>
+                  <text x="106" y="170" text-anchor="end">fct_pipeline_velocity</text>
+                  <rect x="110" y="162" width="58" height="11" fill="#C9651F" rx="1"/>
+                  <text x="173" y="170" fill="#7E776E" font-size="8">1.2s</text>
+                </g>
+                <line x1="110" y1="180" x2="305" y2="180" stroke="#D9D2C0"/>
+                <g font-family="JetBrains Mono" font-size="8" fill="#7E776E" text-anchor="middle">
+                  <text x="110" y="194">0s</text><text x="159" y="194">1s</text>
+                  <text x="208" y="194">2s</text><text x="257" y="194">3s</text><text x="305" y="194">4s</text>
+                </g>
+                <g font-family="JetBrains Mono" font-size="8">
+                  <rect x="110" y="212" width="9" height="9" fill="#C9651F" rx="1"/>
+                  <text x="123" y="220" fill="#4A4540">fct_account_revenue</text>
+                  <text x="123" y="231" fill="#C9651F">↑ 18% slower vs 7d avg</text>
+                </g>
+              </svg>
+            </div>
+          </article>
+
+          <!-- 6. exposures -->
+          <article class="note reveal">
+            <div class="note-head">
+              <span class="file">exposures · downstream</span>
+              <span class="kind">governance</span>
+            </div>
+            <div class="note-body exposures draw-on-reveal" style="padding-top: 0.9rem;">
+              <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7E776E"/></marker>
+                </defs>
+                <rect x="12" y="100" width="105" height="36" rx="4" fill="#3E2B70" stroke="#3E2B70"/>
+                <text x="64" y="116" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FBF8F1">fct_account_</text>
+                <text x="64" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#FBF8F1">revenue</text>
+                <rect x="190" y="35" width="120" height="30" rx="4" fill="#FBF8F1" stroke="#D9D2C0"/>
+                <text x="250" y="51" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#14110D">Sales Pipeline</text>
+                <text x="250" y="61" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7E776E">Looker dashboard</text>
+                <rect x="190" y="100" width="120" height="30" rx="4" fill="#FBF8F1" stroke="#D9D2C0"/>
+                <text x="250" y="116" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#14110D">GTM Slack Bot</text>
+                <text x="250" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7E776E">internal · py</text>
+                <rect x="190" y="165" width="120" height="30" rx="4" fill="#FBF8F1" stroke="#D9D2C0"/>
+                <text x="250" y="181" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#14110D">Salesforce Sync</text>
+                <text x="250" y="191" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7E776E">reverse ETL</text>
+                <g stroke="#7E776E" stroke-width="1" fill="none" marker-end="url(#arr3)">
+                  <path d="M118 110 C 150 110, 160 50, 190 50"/>
+                  <path d="M118 118 L 190 116"/>
+                  <path d="M118 126 C 150 126, 160 180, 190 180"/>
+                </g>
+                <g font-family="JetBrains Mono" font-size="7" fill="#3E2B70">
+                  <circle cx="160" cy="75" r="9" fill="#FBF8F1" stroke="#3E2B70"/>
+                  <text x="160" y="78" text-anchor="middle">3</text>
+                </g>
+                <text x="64" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7E776E">14 tests passing</text>
+                <text x="64" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7E776E">3 exposures</text>
+                <text x="64" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7E776E">∼47m freshness</text>
+              </svg>
+            </div>
+          </article>
+
+          <!-- 7. LARGE: dbt model docs page -->
+          <article class="note note-lg reveal">
+            <div class="note-head">
+              <span class="file">marts/fct_account_revenue · dbt docs</span>
+              <span class="kind">model documentation</span>
+            </div>
+            <div class="note-body docs-pane">
+              <div class="doc-title">
+                <div>
+                  <div class="doc-model-name">fct_account_revenue</div>
+                  <div class="doc-fqn">analytics.marts.fct_account_revenue</div>
+                </div>
+                <div class="doc-badges">
+                  <span class="doc-badge inc">incremental</span>
+                  <span class="doc-badge ok">14 tests · passing</span>
+                </div>
+              </div>
+              <div class="doc-section">
+                <div class="doc-label">description</div>
+                <div class="doc-text">Daily account revenue rollup. Backfills from <code style="font-family:var(--mono);color:var(--accent);">2018-01-01</code> forward. Refreshes hourly via incremental run keyed on <code style="font-family:var(--mono);color:var(--accent);">account_date_id</code>.</div>
+              </div>
+              <div class="doc-section">
+                <div class="doc-label">materialization</div>
+                <div class="doc-meta-grid">
+                  <div><span class="k">materialized</span><span class="v">incremental</span></div>
+                  <div><span class="k">unique_key</span><span class="v">account_date_id</span></div>
+                  <div><span class="k">schema</span><span class="v">analytics_marts</span></div>
+                  <div><span class="k">on_schema_change</span><span class="v">append_new</span></div>
+                </div>
+              </div>
+              <div class="doc-section">
+                <div class="doc-label">columns · 5</div>
+                <table class="doc-cols">
+                  <thead><tr><th>name</th><th>type</th><th>tests</th></tr></thead>
+                  <tbody>
+                    <tr><td>account_date_id</td><td>string</td><td>unique, not_null</td></tr>
+                    <tr><td>account_id</td><td>string</td><td>not_null, → accounts</td></tr>
+                    <tr><td>date_day</td><td>date</td><td>not_null</td></tr>
+                    <tr><td>arr_usd</td><td>numeric</td><td>not_null, ≥ 0</td></tr>
+                    <tr><td>_loaded_at</td><td>timestamp</td><td>not_null</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="doc-section">
+                <div class="doc-label">lineage</div>
+                <div class="doc-lineage-line">
+                  <span class="lineage-pill">3 upstream</span>
+                  <span class="lineage-arrow">→</span>
+                  <span class="lineage-pill self">fct_account_revenue</span>
+                  <span class="lineage-arrow">→</span>
+                  <span class="lineage-pill">2 downstream</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 8. LARGE: Looker Explore -->
+          <article class="note note-lg reveal">
+            <div class="note-head">
+              <span class="file">Looker · Explore: Account Health</span>
+              <span class="kind">BI workspace</span>
+            </div>
+            <div class="note-body explore-pane">
+              <div class="explore-grid">
+                <div class="explore-tree">
+                  <div class="explore-tree-head">VIEWS</div>
+                  <div class="tree-item open"><span class="tree-toggle">▾</span>account_health</div>
+                  <div class="tree-sub">
+                    <div class="tree-item open"><span class="tree-toggle">▾</span>dimensions</div>
+                    <div class="tree-leaf selected">· industry</div>
+                    <div class="tree-leaf selected">· health_tier</div>
+                    <div class="tree-leaf">· account_id</div>
+                    <div class="tree-leaf">· created_at</div>
+                    <div class="tree-item open"><span class="tree-toggle">▾</span>measures</div>
+                    <div class="tree-leaf selected">Σ total_arr</div>
+                    <div class="tree-leaf selected"># at_risk_count</div>
+                    <div class="tree-leaf"># account_count</div>
+                  </div>
+                </div>
+                <div class="explore-main">
+                  <div class="explore-section">
+                    <div class="explore-label">selected fields · 4</div>
+                    <div class="selected-list">
+                      <div class="sf"><span class="ico">▦</span>industry <span class="meta">dimension</span></div>
+                      <div class="sf"><span class="ico">▦</span>health_tier <span class="meta">dimension</span></div>
+                      <div class="sf"><span class="ico">Σ</span>total_arr <span class="meta">sum · usd_0</span></div>
+                      <div class="sf"><span class="ico">#</span>at_risk_count <span class="meta">count</span></div>
+                    </div>
+                  </div>
+                  <div class="explore-section">
+                    <div class="explore-label">filters</div>
+                    <div class="explore-filter">
+                      <span class="ef-field">health_tier</span>
+                      <span class="ef-op">is</span>
+                      <span class="ef-val">at_risk</span>
+                    </div>
+                  </div>
+                  <div class="explore-section">
+                    <div class="explore-label">result · 3 rows</div>
+                    <table class="explore-result">
+                      <thead><tr><th>industry</th><th>total_arr</th><th>at_risk</th></tr></thead>
+                      <tbody>
+                        <tr><td>SaaS</td><td>$4.2M</td><td>12</td></tr>
+                        <tr><td>Fintech</td><td>$2.8M</td><td>7</td></tr>
+                        <tr><td>Healthcare</td><td>$1.4M</td><td>4</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 9. NEW LARGE: Column-level lineage -->
+          <article class="note note-xl reveal">
+            <div class="note-head">
+              <span class="file">column-level lineage · fct_pipeline_velocity</span>
+              <span class="kind">advanced lineage</span>
+            </div>
+            <div class="note-body collineage draw-on-reveal" style="padding: 0.7rem 1rem;">
+              <svg viewBox="0 0 1080 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <marker id="arrCL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7E776E"/></marker>
+                </defs>
+                <!-- Column headers -->
+                <g font-family="JetBrains Mono" font-size="10" letter-spacing="1" fill="#7E776E">
+                  <text x="120" y="25" text-anchor="middle">SOURCE</text>
+                  <text x="460" y="25" text-anchor="middle">STAGING</text>
+                  <text x="800" y="25" text-anchor="middle">MART</text>
+                </g>
+
+                <!-- SOURCE column: salesforce.opportunity -->
+                <g>
+                  <rect x="20" y="40" width="200" height="20" rx="3" fill="#F4EFE5" stroke="#D9D2C0"/>
+                  <text x="120" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#4A4540">salesforce.opportunity</text>
+                  <!-- columns -->
+                  <rect x="20" y="65" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="30" y="80" font-family="JetBrains Mono" font-size="10" fill="#14110D">amount</text>
+                  <text x="210" y="80" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">decimal</text>
+
+                  <rect x="20" y="90" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="30" y="105" font-family="JetBrains Mono" font-size="10" fill="#14110D">stage</text>
+                  <text x="210" y="105" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">string</text>
+
+                  <rect x="20" y="115" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="30" y="130" font-family="JetBrains Mono" font-size="10" fill="#14110D">stage_entered_at</text>
+                  <text x="210" y="130" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">timestamp</text>
+
+                  <rect x="20" y="140" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="30" y="155" font-family="JetBrains Mono" font-size="10" fill="#14110D">close_date</text>
+                  <text x="210" y="155" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">date</text>
+                </g>
+
+                <!-- SOURCE: salesforce.account -->
+                <g>
+                  <rect x="20" y="200" width="200" height="20" rx="3" fill="#F4EFE5" stroke="#D9D2C0"/>
+                  <text x="120" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#4A4540">salesforce.account</text>
+                  <rect x="20" y="225" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="30" y="240" font-family="JetBrains Mono" font-size="10" fill="#14110D">industry</text>
+                  <text x="210" y="240" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">string</text>
+
+                  <rect x="20" y="250" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="30" y="265" font-family="JetBrains Mono" font-size="10" fill="#14110D">employee_count</text>
+                  <text x="210" y="265" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">integer</text>
+                </g>
+
+                <!-- STAGING column -->
+                <g>
+                  <rect x="360" y="40" width="200" height="20" rx="3" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
+                  <text x="460" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#14110D">stg_opportunities</text>
+                  <rect x="360" y="65" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="370" y="80" font-family="JetBrains Mono" font-size="10" fill="#14110D">amount_usd</text>
+                  <text x="550" y="80" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">numeric</text>
+
+                  <rect x="360" y="90" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="370" y="105" font-family="JetBrains Mono" font-size="10" fill="#14110D">stage_clean</text>
+                  <text x="550" y="105" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">enum</text>
+
+                  <rect x="360" y="115" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="370" y="130" font-family="JetBrains Mono" font-size="10" fill="#14110D">stage_entered_at</text>
+                  <text x="550" y="130" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">timestamp</text>
+
+                  <rect x="360" y="140" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="370" y="155" font-family="JetBrains Mono" font-size="10" fill="#14110D">close_date</text>
+                  <text x="550" y="155" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">date</text>
+
+                  <rect x="360" y="200" width="200" height="20" rx="3" fill="#FBF8F1" stroke="#3E2B70" stroke-width="1.2"/>
+                  <text x="460" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#14110D">stg_accounts</text>
+                  <rect x="360" y="225" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="370" y="240" font-family="JetBrains Mono" font-size="10" fill="#14110D">industry</text>
+                  <text x="550" y="240" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">string</text>
+
+                  <rect x="360" y="250" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="370" y="265" font-family="JetBrains Mono" font-size="10" fill="#14110D">size_bucket</text>
+                  <text x="550" y="265" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">enum</text>
+                </g>
+
+                <!-- MART column: fct_pipeline_velocity -->
+                <g>
+                  <rect x="700" y="40" width="200" height="20" rx="3" fill="#3E2B70" stroke="#3E2B70"/>
+                  <text x="800" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#FBF8F1">fct_pipeline_velocity</text>
+
+                  <rect x="700" y="65" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="710" y="80" font-family="JetBrains Mono" font-size="10" fill="#14110D">amount_usd</text>
+                  <text x="890" y="80" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">numeric</text>
+
+                  <rect x="700" y="90" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="710" y="105" font-family="JetBrains Mono" font-size="10" fill="#14110D">stage</text>
+                  <text x="890" y="105" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">enum</text>
+
+                  <rect x="700" y="115" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="710" y="130" font-family="JetBrains Mono" font-size="10" fill="#14110D">days_in_stage</text>
+                  <text x="890" y="130" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5A7A3E">derived</text>
+
+                  <rect x="700" y="140" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="710" y="155" font-family="JetBrains Mono" font-size="10" fill="#14110D">stage_velocity</text>
+                  <text x="890" y="155" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5A7A3E">derived</text>
+
+                  <rect x="700" y="165" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="710" y="180" font-family="JetBrains Mono" font-size="10" fill="#14110D">close_date</text>
+                  <text x="890" y="180" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#C9651F">date</text>
+
+                  <rect x="700" y="225" width="200" height="22" rx="2" fill="#FBF8F1" stroke="#E5DECC"/>
+                  <text x="710" y="240" font-family="JetBrains Mono" font-size="10" fill="#14110D">industry_segment</text>
+                  <text x="890" y="240" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5A7A3E">derived</text>
+                </g>
+
+                <!-- Edges: source columns -> staging columns -->
+                <g stroke="#7E776E" stroke-width="0.9" fill="none" marker-end="url(#arrCL)" opacity="0.7">
+                  <!-- amount -> amount_usd -->
+                  <path d="M222 76 C 290 76, 290 76, 358 76"/>
+                  <!-- stage -> stage_clean -->
+                  <path d="M222 101 C 290 101, 290 101, 358 101"/>
+                  <!-- stage_entered_at -> stage_entered_at -->
+                  <path d="M222 126 C 290 126, 290 126, 358 126"/>
+                  <!-- close_date -> close_date -->
+                  <path d="M222 151 C 290 151, 290 151, 358 151"/>
+                  <!-- industry -> industry -->
+                  <path d="M222 236 C 290 236, 290 236, 358 236"/>
+                  <!-- employee_count -> size_bucket (derived) -->
+                  <path d="M222 261 C 290 261, 290 261, 358 261" stroke="#5A7A3E"/>
+                </g>
+
+                <!-- Edges: staging -> mart -->
+                <g stroke="#3E2B70" stroke-width="1.2" fill="none" marker-end="url(#arrCL)">
+                  <!-- amount_usd -> amount_usd -->
+                  <path d="M562 76 C 630 76, 630 76, 698 76"/>
+                  <!-- stage_clean -> stage -->
+                  <path d="M562 101 C 630 101, 630 101, 698 101"/>
+                  <!-- stage_entered_at -> days_in_stage (derived) -->
+                  <path d="M562 126 C 620 126, 620 126, 698 126" stroke="#5A7A3E"/>
+                  <!-- stage_entered_at -> stage_velocity (derived) -->
+                  <path d="M562 126 C 620 126, 620 151, 698 151" stroke="#5A7A3E"/>
+                  <!-- close_date -> close_date -->
+                  <path d="M562 151 C 630 151, 630 176, 698 176"/>
+                  <!-- industry -> industry_segment (derived) -->
+                  <path d="M562 236 C 630 236, 630 236, 698 236" stroke="#5A7A3E"/>
+                  <!-- size_bucket -> industry_segment (derived join) -->
+                  <path d="M562 261 C 620 261, 620 236, 698 236" stroke="#5A7A3E"/>
+                </g>
+
+                <!-- Annotations -->
+                <g font-family="JetBrains Mono" font-size="8" fill="#5A7A3E">
+                  <text x="630" y="118" text-anchor="middle">+ DATEDIFF</text>
+                  <text x="630" y="158" text-anchor="middle">+ velocity calc</text>
+                  <text x="630" y="220" text-anchor="middle">+ segment join</text>
+                </g>
+
+                <!-- Legend -->
+                <g font-family="JetBrains Mono" font-size="9" fill="#4A4540">
+                  <line x1="20" y1="320" x2="40" y2="320" stroke="#7E776E" stroke-width="0.9"/>
+                  <text x="48" y="324">1:1 mapping</text>
+                  <line x1="180" y1="320" x2="200" y2="320" stroke="#5A7A3E" stroke-width="1.2"/>
+                  <text x="208" y="324">derived / transformed</text>
+                  <line x1="400" y1="320" x2="420" y2="320" stroke="#3E2B70" stroke-width="1.2"/>
+                  <text x="428" y="324">staging → mart</text>
+                </g>
+              </svg>
+            </div>
+          </article>
+
+          <!-- 10. NEW LARGE: PR / code review diff -->
+          <article class="note note-xl reveal">
+            <div class="note-head">
+              <span class="file">PR #142 · feat: add stage_velocity derived field</span>
+              <span class="kind">code review</span>
+            </div>
+            <div class="note-body pr-pane" style="padding: 0;">
+              <div class="pr-meta">
+                <div class="pr-title">
+                  <span class="pr-num">#142</span>
+                  <span class="pr-name">feat: add stage_velocity derived field</span>
+                </div>
+                <span class="pr-status">merged · 2h ago</span>
+              </div>
+              <div class="pr-stats">
+                <span>2 files changed</span>
+                <span class="add">+28 lines</span>
+                <span class="rem">−4 lines</span>
+                <span>·</span>
+                <span>14 checks passed</span>
+              </div>
+              <div class="pr-files">
+                <div class="pr-file">
+                  <div class="pr-file-head">
+                    <span>models/marts/fct_pipeline_velocity.sql</span>
+                    <span class="delta"><span style="color:var(--green);">+14</span> <span style="color:var(--red);">−2</span></span>
+                  </div>
+                  <div class="pr-diff">
+                    <div class="pr-diff-row ctx"><span class="ln">12</span><span class="ln">12</span><span class="code"><span class="tok-kw">WITH</span> ranked_opps <span class="tok-kw">AS</span> (</span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">13</span><span class="ln">13</span><span class="code">  <span class="tok-kw">SELECT</span></span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">14</span><span class="ln">14</span><span class="code">    opp_id,</span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">15</span><span class="ln">15</span><span class="code">    account_id,</span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">16</span><span class="ln">16</span><span class="code">    stage,</span></div>
+                    <div class="pr-diff-row rem"><span class="ln">17</span><span class="ln"></span><span class="code">    stage_entered_at,</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">17</span><span class="code">    stage_entered_at,</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">18</span><span class="code">    <span class="tok-fn">DATEDIFF</span>(<span class="tok-str">'day'</span>, stage_entered_at,</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">19</span><span class="code">      <span class="tok-fn">CURRENT_DATE</span>) <span class="tok-kw">AS</span> days_in_stage,</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">20</span><span class="code">    amount_usd / <span class="tok-fn">NULLIF</span>(days_in_stage, <span class="tok-num">0</span>)</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">21</span><span class="code">      <span class="tok-kw">AS</span> stage_velocity,</span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">18</span><span class="ln">22</span><span class="code">    amount_usd</span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">19</span><span class="ln">23</span><span class="code">  <span class="tok-kw">FROM</span> {{ <span class="tok-fn">ref</span>(<span class="tok-str">'stg_opportunities'</span>) }}</span></div>
+                  </div>
+                </div>
+                <div class="pr-file">
+                  <div class="pr-file-head">
+                    <span>models/marts/_marts.yml</span>
+                    <span class="delta"><span style="color:var(--green);">+14</span> <span style="color:var(--red);">−2</span></span>
+                  </div>
+                  <div class="pr-diff">
+                    <div class="pr-diff-row ctx"><span class="ln">28</span><span class="ln">28</span><span class="code">    <span class="tok-key">columns:</span></span></div>
+                    <div class="pr-diff-row ctx"><span class="ln">29</span><span class="ln">29</span><span class="code">      <span class="tok-list">-</span> <span class="tok-key">name:</span> stage</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">30</span><span class="code">      <span class="tok-list">-</span> <span class="tok-key">name:</span> days_in_stage</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">31</span><span class="code">        <span class="tok-key">tests:</span></span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">32</span><span class="code">          <span class="tok-list">-</span> not_null</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">33</span><span class="code">          <span class="tok-list">-</span> <span class="tok-key">dbt_utils.accepted_range:</span></span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">34</span><span class="code">              <span class="tok-key">min_value:</span> <span class="tok-num">0</span></span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">35</span><span class="code">      <span class="tok-list">-</span> <span class="tok-key">name:</span> stage_velocity</span></div>
+                    <div class="pr-diff-row add"><span class="ln"></span><span class="ln">36</span><span class="code">        <span class="tok-key">tests:</span> [not_null]</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 11. NEW LARGE: Hex notebook -->
+          <article class="note note-xl reveal">
+            <div class="note-head">
+              <span class="file">Hex · GTM Health Monitor.hex</span>
+              <span class="kind">notebook · live app</span>
+            </div>
+            <div class="note-body hex-pane">
+              <div class="hex-grid">
+                <div class="hex-rail">
+                  <div class="hex-rail-head">CELLS · 5</div>
+                  <div class="hex-cell-item active">
+                    <span class="hex-cnum-r">1</span>
+                    <span class="hex-ctype-r input">in</span>
+                    <span class="hex-cname">industry_filter</span>
+                  </div>
+                  <div class="hex-cell-item">
+                    <span class="hex-cnum-r">2</span>
+                    <span class="hex-ctype-r sql">sql</span>
+                    <span class="hex-cname">query_health</span>
+                  </div>
+                  <div class="hex-cell-item">
+                    <span class="hex-cnum-r">3</span>
+                    <span class="hex-ctype-r tbl">tbl</span>
+                    <span class="hex-cname">df_health</span>
+                  </div>
+                  <div class="hex-cell-item">
+                    <span class="hex-cnum-r">4</span>
+                    <span class="hex-ctype-r chart">chart</span>
+                    <span class="hex-cname">arr_by_industry</span>
+                  </div>
+                  <div class="hex-cell-item">
+                    <span class="hex-cnum-r">5</span>
+                    <span class="hex-ctype-r md">md</span>
+                    <span class="hex-cname">narrative</span>
+                  </div>
+                  <div class="hex-rail-foot">
+                    <span class="hex-status-dot"></span>
+                    <span>all cells synced · 0.04s</span>
+                  </div>
+                </div>
+
+                <div class="hex-main">
+                  <!-- Cell 1: input -->
+                  <div class="hex-cell">
+                    <div class="hex-cell-head">
+                      <span class="hex-cnum">[1]</span>
+                      <span class="hex-ctype-tag input">INPUT</span>
+                      <span class="hex-cvar">industry_filter</span>
+                      <span class="hex-ctime">·</span>
+                    </div>
+                    <div class="hex-cell-body">
+                      <div class="hex-input-row">
+                        <span class="hex-label">Industry</span>
+                        <span class="hex-select">SaaS <span class="hex-caret">▾</span></span>
+                        <span class="hex-label">Min ARR</span>
+                        <span class="hex-select">$50k <span class="hex-caret">▾</span></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Cell 2: SQL -->
+                  <div class="hex-cell">
+                    <div class="hex-cell-head">
+                      <span class="hex-cnum">[2]</span>
+                      <span class="hex-ctype-tag sql">SQL</span>
+                      <span class="hex-cvar">df_health</span>
+                      <span class="hex-csource">→ snowflake.analytics</span>
+                      <span class="hex-ctime">ran 1.2s</span>
+                    </div>
+                    <div class="hex-cell-body hex-code-body">
+<pre class="hex-code"><span class="tok-kw">SELECT</span>
+  industry,
+  <span class="tok-fn">COUNT</span>(<span class="tok-fn">DISTINCT</span> account_id) <span class="tok-kw">AS</span> account_count,
+  <span class="tok-fn">SUM</span>(arr_usd) <span class="tok-kw">AS</span> total_arr,
+  <span class="tok-fn">SUM</span>(<span class="tok-kw">CASE</span> <span class="tok-kw">WHEN</span> health_tier <span class="tok-fn">=</span> <span class="tok-str">'at_risk'</span>
+       <span class="tok-kw">THEN</span> arr_usd <span class="tok-kw">ELSE</span> <span class="tok-num">0</span> <span class="tok-kw">END</span>) <span class="tok-kw">AS</span> at_risk_arr
+<span class="tok-kw">FROM</span> {{ <span class="tok-fn">ref</span>(<span class="tok-str">'fct_account_health'</span>) }}
+<span class="tok-kw">WHERE</span> industry <span class="tok-fn">=</span> <span class="hex-jinja">{{ industry_filter }}</span>
+  <span class="tok-kw">AND</span> arr_usd <span class="tok-fn">&gt;=</span> <span class="hex-jinja">{{ min_arr }}</span>
+<span class="tok-kw">GROUP BY</span> <span class="tok-num">1</span>
+<span class="tok-kw">ORDER BY</span> total_arr <span class="tok-kw">DESC</span></pre>
+                    </div>
+                  </div>
+
+                  <!-- Cell 3: result table -->
+                  <div class="hex-cell">
+                    <div class="hex-cell-head">
+                      <span class="hex-cnum">[3]</span>
+                      <span class="hex-ctype-tag tbl">TABLE</span>
+                      <span class="hex-cvar">df_health</span>
+                      <span class="hex-ctime">4 rows · 1 col selected</span>
+                    </div>
+                    <div class="hex-cell-body hex-table-body">
+                      <table class="hex-result">
+                        <thead><tr><th>industry</th><th>accounts</th><th>total_arr</th><th>at_risk_arr</th></tr></thead>
+                        <tbody>
+                          <tr><td>SaaS</td><td>24</td><td>$4,212,000</td><td class="risk">$580,400</td></tr>
+                          <tr><td>Fintech</td><td>17</td><td>$2,840,500</td><td class="risk">$310,200</td></tr>
+                          <tr><td>Healthcare</td><td>11</td><td>$1,440,000</td><td class="risk">$180,000</td></tr>
+                          <tr><td>Retail</td><td>9</td><td>$890,300</td><td class="risk">$96,500</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Cell 4: chart -->
+                  <div class="hex-cell">
+                    <div class="hex-cell-head">
+                      <span class="hex-cnum">[4]</span>
+                      <span class="hex-ctype-tag chart">CHART</span>
+                      <span class="hex-cvar">arr_by_industry · bar</span>
+                      <span class="hex-ctime">·</span>
+                    </div>
+                    <div class="hex-cell-body hex-chart-body">
+                      <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg">
+                        <!-- y axis labels -->
+                        <g font-family="JetBrains Mono" font-size="9" fill="#4A4540">
+                          <text x="80" y="30" text-anchor="end">SaaS</text>
+                          <text x="80" y="62" text-anchor="end">Fintech</text>
+                          <text x="80" y="94" text-anchor="end">Healthcare</text>
+                          <text x="80" y="126" text-anchor="end">Retail</text>
+                        </g>
+                        <!-- bars: total_arr stacked with at_risk_arr highlighted -->
+                        <!-- SaaS: 4.2M, at_risk 580k -->
+                        <g>
+                          <rect x="88" y="20" width="380" height="14" fill="#3E2B70" rx="1"/>
+                          <rect x="88" y="20" width="52" height="14" fill="#A83333" rx="1"/>
+                          <text x="475" y="30" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$4.2M</text>
+                        </g>
+                        <!-- Fintech: 2.84M, at_risk 310k -->
+                        <g>
+                          <rect x="88" y="52" width="256" height="14" fill="#3E2B70" rx="1"/>
+                          <rect x="88" y="52" width="28" height="14" fill="#A83333" rx="1"/>
+                          <text x="351" y="62" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$2.84M</text>
+                        </g>
+                        <!-- Healthcare: 1.44M, at_risk 180k -->
+                        <g>
+                          <rect x="88" y="84" width="130" height="14" fill="#3E2B70" rx="1"/>
+                          <rect x="88" y="84" width="16" height="14" fill="#A83333" rx="1"/>
+                          <text x="225" y="94" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$1.44M</text>
+                        </g>
+                        <!-- Retail: 890k, at_risk 96k -->
+                        <g>
+                          <rect x="88" y="116" width="80" height="14" fill="#3E2B70" rx="1"/>
+                          <rect x="88" y="116" width="9" height="14" fill="#A83333" rx="1"/>
+                          <text x="175" y="126" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$890k</text>
+                        </g>
+                        <!-- axis -->
+                        <line x1="88" y1="140" x2="468" y2="140" stroke="#D9D2C0" stroke-width="0.8"/>
+                        <g font-family="JetBrains Mono" font-size="8" fill="#7E776E" text-anchor="middle">
+                          <text x="88" y="152">$0</text>
+                          <text x="183" y="152">$1M</text>
+                          <text x="278" y="152">$2M</text>
+                          <text x="373" y="152">$3M</text>
+                          <text x="468" y="152">$4M</text>
+                        </g>
+                        <!-- legend -->
+                        <g font-family="JetBrains Mono" font-size="8" fill="#4A4540">
+                          <rect x="370" y="2" width="10" height="8" fill="#3E2B70"/>
+                          <text x="384" y="9">total_arr</text>
+                          <rect x="430" y="2" width="10" height="8" fill="#A83333"/>
+                          <text x="444" y="9">at_risk</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- STACK -->
     <section class="stack" id="stack">
       <div class="wrap">
-        <div class="cell-label reveal"><span class="num">[02]</span><span>stack</span><span class="rule"></span></div>
+        <div class="cell-label reveal"><span class="num">[03]</span><span>stack</span><span class="rule"></span></div>
         <h2 class="reveal d1">The pipeline I <span class="em">reach for</span>.</h2>
         <p class="stack-intro reveal d2">From source extracts to a metric on someone's dashboard, this is the chain I work in most days. Tools listed are ones I've shipped work with — not collected.</p>
-
         <div class="pipeline reveal d3">
           <div class="pipe-stage">
             <div class="stage-num">→ 01</div>
@@ -779,7 +1915,6 @@
             <div class="stage-tools"><span>Looker / LookML</span><span>Lightdash</span><span>Hex</span><span>Mode</span></div>
           </div>
         </div>
-
         <div class="extras-grid reveal d4">
           <div class="extra">
             <h4>Applied ML</h4>
@@ -797,9 +1932,10 @@
       </div>
     </section>
 
+    <!-- PROJECTS -->
     <section class="projects" id="projects">
       <div class="wrap">
-        <div class="cell-label reveal"><span class="num">[03]</span><span>selected projects</span><span class="rule"></span></div>
+        <div class="cell-label reveal"><span class="num">[04]</span><span>selected projects</span><span class="rule"></span></div>
         <h2 class="reveal d1">Building <span class="em">in public</span>.</h2>
         <p class="projects-intro reveal d2">Three projects shipping over the next several weeks. Each is a public dbt repo, a write-up, and an artifact you can actually poke at — designed to demonstrate analytics engineering at the messy middle: schema design, dbt model architecture, applied ML for business outcomes, and LLM-augmented analytics workflows.</p>
 
@@ -807,10 +1943,7 @@
           <article class="proj reveal">
             <div>
               <div class="proj-head">
-                <div>
-                  <div class="proj-id">project_01</div>
-                  <h3>GTM Semantic Layer</h3>
-                </div>
+                <div><div class="proj-id">project_01</div><h3>GTM Semantic Layer</h3></div>
                 <span class="status progress">In progress</span>
               </div>
               <p class="desc">A complete dbt project modeling a synthetic CRM dataset — accounts, opportunities, contacts, activities — into a sales-funnel mart with account-health scoring. Staging → intermediate → marts architecture, 60+ models, custom generic tests for referential integrity and business rules, dbt docs deployed to GitHub Pages. The semantic layer renders out to Looker explores.</p>
@@ -818,147 +1951,303 @@
                 <span class="tag">dbt</span><span class="tag">BigQuery</span><span class="tag">Looker</span><span class="tag">dimensional modeling</span><span class="tag">GitHub Actions</span>
               </div>
               <div class="proj-links">
-                <a class="disabled">github →</a>
-                <a class="disabled">case study →</a>
-                <a class="disabled">dbt docs →</a>
+                <a class="disabled">github →</a><a class="disabled">case study →</a><a class="disabled">dbt docs →</a>
               </div>
             </div>
-            <div class="proj-preview">
-              <div class="proj-preview-head"><span>dbt lineage · preview</span><span>60 models</span></div>
-              <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7E776E"/>
-                  </marker>
-                </defs>
-                <circle cx="30" cy="40" r="6" fill="none" stroke="#7E776E"/>
-                <circle cx="30" cy="80" r="6" fill="none" stroke="#7E776E"/>
-                <circle cx="30" cy="120" r="6" fill="none" stroke="#7E776E"/>
-                <circle cx="30" cy="160" r="6" fill="none" stroke="#7E776E"/>
-                <rect x="100" y="32" width="14" height="14" rx="2" fill="#8B79C2"/>
-                <rect x="100" y="72" width="14" height="14" rx="2" fill="#8B79C2"/>
-                <rect x="100" y="112" width="14" height="14" rx="2" fill="#8B79C2"/>
-                <rect x="100" y="152" width="14" height="14" rx="2" fill="#8B79C2"/>
-                <rect x="170" y="60" width="14" height="14" rx="2" fill="#3E2B70"/>
-                <rect x="170" y="100" width="14" height="14" rx="2" fill="#3E2B70"/>
-                <rect x="170" y="140" width="14" height="14" rx="2" fill="#3E2B70"/>
-                <rect x="250" y="80" width="18" height="18" rx="3" fill="#C9651F"/>
-                <rect x="250" y="120" width="18" height="18" rx="3" fill="#C9651F"/>
-                <g stroke="#7E776E" stroke-width="0.8" fill="none" opacity="0.7">
-                  <path d="M36 40 L 100 39" marker-end="url(#arr2)"/>
-                  <path d="M36 80 L 100 79" marker-end="url(#arr2)"/>
-                  <path d="M36 120 L 100 119" marker-end="url(#arr2)"/>
-                  <path d="M36 160 L 100 159" marker-end="url(#arr2)"/>
-                  <path d="M114 40 C 140 40, 140 67, 170 67" marker-end="url(#arr2)"/>
-                  <path d="M114 80 C 140 80, 140 67, 170 67" marker-end="url(#arr2)"/>
-                  <path d="M114 80 C 140 80, 140 107, 170 107" marker-end="url(#arr2)"/>
-                  <path d="M114 120 C 140 120, 140 107, 170 107" marker-end="url(#arr2)"/>
-                  <path d="M114 120 C 140 120, 140 147, 170 147" marker-end="url(#arr2)"/>
-                  <path d="M114 160 C 140 160, 140 147, 170 147" marker-end="url(#arr2)"/>
-                  <path d="M184 67 C 220 67, 220 89, 250 89" marker-end="url(#arr2)"/>
-                  <path d="M184 107 C 220 107, 220 89, 250 89" marker-end="url(#arr2)"/>
-                  <path d="M184 107 C 220 107, 220 129, 250 129" marker-end="url(#arr2)"/>
-                  <path d="M184 147 C 220 147, 220 129, 250 129" marker-end="url(#arr2)"/>
-                </g>
-                <g font-family="JetBrains Mono" font-size="8" fill="#7E776E" letter-spacing="1">
-                  <text x="30" y="190" text-anchor="middle">SRC</text>
-                  <text x="107" y="190" text-anchor="middle">STG</text>
-                  <text x="177" y="190" text-anchor="middle">INT</text>
-                  <text x="259" y="190" text-anchor="middle">MART</text>
-                </g>
-              </svg>
+            <div class="proj-preview" data-proj="p1">
+              <div class="proj-tabs">
+                <button class="ptab active" data-target="p1-lineage">lineage</button>
+                <button class="ptab" data-target="p1-schema">schema</button>
+                <button class="ptab" data-target="p1-tests">tests</button>
+              </div>
+              <div class="ppane active" id="p1-lineage">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>dbt lineage</span><span>60 models</span></div>
+                <div class="draw-on-reveal" style="flex:1;display:flex;">
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7E776E"/></marker>
+                  </defs>
+                  <circle cx="30" cy="40" r="6" fill="none" stroke="#7E776E"/>
+                  <circle cx="30" cy="80" r="6" fill="none" stroke="#7E776E"/>
+                  <circle cx="30" cy="120" r="6" fill="none" stroke="#7E776E"/>
+                  <circle cx="30" cy="160" r="6" fill="none" stroke="#7E776E"/>
+                  <rect x="100" y="32" width="14" height="14" rx="2" fill="#8B79C2"/>
+                  <rect x="100" y="72" width="14" height="14" rx="2" fill="#8B79C2"/>
+                  <rect x="100" y="112" width="14" height="14" rx="2" fill="#8B79C2"/>
+                  <rect x="100" y="152" width="14" height="14" rx="2" fill="#8B79C2"/>
+                  <rect x="170" y="60" width="14" height="14" rx="2" fill="#3E2B70"/>
+                  <rect x="170" y="100" width="14" height="14" rx="2" fill="#3E2B70"/>
+                  <rect x="170" y="140" width="14" height="14" rx="2" fill="#3E2B70"/>
+                  <rect x="250" y="80" width="18" height="18" rx="3" fill="#C9651F"/>
+                  <rect x="250" y="120" width="18" height="18" rx="3" fill="#C9651F"/>
+                  <g stroke="#7E776E" stroke-width="0.8" fill="none" opacity="0.7">
+                    <path d="M36 40 L 100 39" marker-end="url(#arr2)"/>
+                    <path d="M36 80 L 100 79" marker-end="url(#arr2)"/>
+                    <path d="M36 120 L 100 119" marker-end="url(#arr2)"/>
+                    <path d="M36 160 L 100 159" marker-end="url(#arr2)"/>
+                    <path d="M114 40 C 140 40, 140 67, 170 67" marker-end="url(#arr2)"/>
+                    <path d="M114 80 C 140 80, 140 67, 170 67" marker-end="url(#arr2)"/>
+                    <path d="M114 80 C 140 80, 140 107, 170 107" marker-end="url(#arr2)"/>
+                    <path d="M114 120 C 140 120, 140 107, 170 107" marker-end="url(#arr2)"/>
+                    <path d="M114 120 C 140 120, 140 147, 170 147" marker-end="url(#arr2)"/>
+                    <path d="M114 160 C 140 160, 140 147, 170 147" marker-end="url(#arr2)"/>
+                    <path d="M184 67 C 220 67, 220 89, 250 89" marker-end="url(#arr2)"/>
+                    <path d="M184 107 C 220 107, 220 89, 250 89" marker-end="url(#arr2)"/>
+                    <path d="M184 107 C 220 107, 220 129, 250 129" marker-end="url(#arr2)"/>
+                    <path d="M184 147 C 220 147, 220 129, 250 129" marker-end="url(#arr2)"/>
+                  </g>
+                  <g font-family="JetBrains Mono" font-size="8" fill="#7E776E" letter-spacing="1">
+                    <text x="30" y="190" text-anchor="middle">SRC</text>
+                    <text x="107" y="190" text-anchor="middle">STG</text>
+                    <text x="177" y="190" text-anchor="middle">INT</text>
+                    <text x="259" y="190" text-anchor="middle">MART</text>
+                  </g>
+                </svg>
+                </div>
+              </div>
+              <div class="ppane" id="p1-schema">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>fct_pipeline_velocity</span><span>12 cols</span></div>
+                <div class="schema" style="padding: 0;">
+                  <div class="col"><span>opp_id</span><span><span class="typ">string</span><span class="meta">PK</span></span></div>
+                  <div class="col"><span>account_id</span><span><span class="typ">string</span><span class="meta">FK</span></span></div>
+                  <div class="col"><span>stage</span><span><span class="typ">enum</span></span></div>
+                  <div class="col"><span>amount_usd</span><span><span class="typ">numeric</span></span></div>
+                  <div class="col"><span>days_in_stage</span><span><span class="typ">int</span></span></div>
+                  <div class="col"><span>stage_velocity</span><span><span class="typ">numeric</span></span></div>
+                  <div class="col"><span>is_stalled</span><span><span class="typ">bool</span><span class="meta">derived</span></span></div>
+                  <div class="col"><span>close_date</span><span><span class="typ">date</span></span></div>
+                  <div class="col"><span>created_at</span><span><span class="typ">timestamp</span></span></div>
+                  <div class="col"><span>updated_at</span><span><span class="typ">timestamp</span></span></div>
+                  <div class="col"><span>dbt_valid_from</span><span><span class="typ">timestamp</span><span class="meta">SCD2</span></span></div>
+                  <div class="col"><span>dbt_valid_to</span><span><span class="typ">timestamp</span><span class="meta">SCD2</span></span></div>
+                </div>
+              </div>
+              <div class="ppane" id="p1-tests">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>dbt test results</span><span>87 pass · 0 fail</span></div>
+                <div class="tests" style="padding: 0;">
+                  <div class="test-row"><span class="status-dot"></span><div class="name">unique_opp_id <span class="lbl">· fct_pipeline_velocity</span></div><span class="time">0.04s</span></div>
+                  <div class="test-row"><span class="status-dot"></span><div class="name">not_null_account_id <span class="lbl">· all marts</span></div><span class="time">0.02s</span></div>
+                  <div class="test-row"><span class="status-dot"></span><div class="name">relationships_opp__account <span class="lbl">→ dim_accounts</span></div><span class="time">0.05s</span></div>
+                  <div class="test-row"><span class="status-dot"></span><div class="name">accepted_values_stage <span class="lbl">· 7 enum values</span></div><span class="time">0.02s</span></div>
+                  <div class="test-row"><span class="status-dot"></span><div class="name">no_orphans__activities <span class="lbl">· custom generic</span></div><span class="time">0.06s</span></div>
+                  <div class="test-row"><span class="status-dot"></span><div class="name">freshness__salesforce <span class="lbl">· &lt; 2h</span></div><span class="time">0.01s</span></div>
+                </div>
+              </div>
             </div>
           </article>
 
           <article class="proj reveal">
             <div>
               <div class="proj-head">
-                <div>
-                  <div class="proj-id">project_02</div>
-                  <h3>Marketing Attribution &amp; LTV</h3>
-                </div>
+                <div><div class="proj-id">project_02</div><h3>Marketing Attribution &amp; LTV</h3></div>
                 <span class="status planning">Planning</span>
               </div>
               <p class="desc">A predictive-modeling layer on top of public e-commerce data (Brazilian Olist). dbt customer-journey models feed a Python BG/NBD + Gamma-Gamma LTV model and a multi-touch attribution analysis. End-to-end: warehouse modeling, feature engineering, lifetimes / scikit-learn modeling, surfaced through a small interactive app.</p>
               <div class="proj-tags">
                 <span class="tag">dbt</span><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">lifetimes</span><span class="tag">attribution</span>
               </div>
-              <div class="proj-links">
-                <a class="disabled">github →</a>
-                <a class="disabled">case study →</a>
-              </div>
+              <div class="proj-links"><a class="disabled">github →</a><a class="disabled">case study →</a></div>
             </div>
-            <div class="proj-preview">
-              <div class="proj-preview-head"><span>predicted LTV curve · preview</span><span>BG/NBD</span></div>
-              <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
-                <line x1="35" y1="160" x2="305" y2="160" stroke="#D9D2C0"/>
-                <line x1="35" y1="20" x2="35" y2="160" stroke="#D9D2C0"/>
-                <g stroke="#E5DECC" stroke-dasharray="2 2">
-                  <line x1="35" y1="125" x2="305" y2="125"/>
-                  <line x1="35" y1="90" x2="305" y2="90"/>
-                  <line x1="35" y1="55" x2="305" y2="55"/>
-                </g>
-                <path d="M 45 145 L 75 132 L 105 118 L 135 100 L 165 82" stroke="#3E2B70" stroke-width="2" fill="none"/>
-                <path d="M 165 82 L 195 68 L 225 58 L 255 52 L 285 48" stroke="#C9651F" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
-                <path d="M 165 82 L 195 60 L 225 48 L 255 40 L 285 36 L 285 60 L 255 64 L 225 68 L 195 76 L 165 82 Z" fill="#C9651F" opacity="0.12"/>
-                <g fill="#3E2B70">
-                  <circle cx="45" cy="145" r="3"/>
-                  <circle cx="75" cy="132" r="3"/>
-                  <circle cx="105" cy="118" r="3"/>
-                  <circle cx="135" cy="100" r="3"/>
-                  <circle cx="165" cy="82" r="3"/>
-                </g>
-                <g font-family="JetBrains Mono" font-size="9" fill="#7E776E">
-                  <text x="30" y="165" text-anchor="end">$0</text>
-                  <text x="30" y="130" text-anchor="end">$40</text>
-                  <text x="30" y="95" text-anchor="end">$80</text>
-                  <text x="30" y="60" text-anchor="end">$120</text>
-                  <text x="45" y="178" text-anchor="middle">M1</text>
-                  <text x="105" y="178" text-anchor="middle">M3</text>
-                  <text x="165" y="178" text-anchor="middle">M6</text>
-                  <text x="225" y="178" text-anchor="middle">M9</text>
-                  <text x="285" y="178" text-anchor="middle">M12</text>
-                </g>
-                <g font-family="JetBrains Mono" font-size="8" fill="#4A4540">
-                  <line x1="180" y1="28" x2="200" y2="28" stroke="#3E2B70" stroke-width="2"/>
-                  <text x="206" y="31">observed</text>
-                  <line x1="248" y1="28" x2="268" y2="28" stroke="#C9651F" stroke-width="2" stroke-dasharray="3 2"/>
-                  <text x="273" y="31">predicted</text>
-                </g>
-              </svg>
+            <div class="proj-preview" data-proj="p2">
+              <div class="proj-tabs">
+                <button class="ptab active" data-target="p2-ltv">LTV curve</button>
+                <button class="ptab" data-target="p2-cohort">cohort</button>
+                <button class="ptab" data-target="p2-attr">attribution</button>
+              </div>
+              <div class="ppane active" id="p2-ltv">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>predicted LTV</span><span>BG/NBD</span></div>
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="35" y1="160" x2="305" y2="160" stroke="#D9D2C0"/>
+                  <line x1="35" y1="20" x2="35" y2="160" stroke="#D9D2C0"/>
+                  <g stroke="#E5DECC" stroke-dasharray="2 2">
+                    <line x1="35" y1="125" x2="305" y2="125"/>
+                    <line x1="35" y1="90" x2="305" y2="90"/>
+                    <line x1="35" y1="55" x2="305" y2="55"/>
+                  </g>
+                  <path d="M 45 145 L 75 132 L 105 118 L 135 100 L 165 82" stroke="#3E2B70" stroke-width="2" fill="none"/>
+                  <path d="M 165 82 L 195 68 L 225 58 L 255 52 L 285 48" stroke="#C9651F" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
+                  <path d="M 165 82 L 195 60 L 225 48 L 255 40 L 285 36 L 285 60 L 255 64 L 225 68 L 195 76 L 165 82 Z" fill="#C9651F" opacity="0.12"/>
+                  <g fill="#3E2B70">
+                    <circle cx="45" cy="145" r="3"/><circle cx="75" cy="132" r="3"/>
+                    <circle cx="105" cy="118" r="3"/><circle cx="135" cy="100" r="3"/>
+                    <circle cx="165" cy="82" r="3"/>
+                  </g>
+                  <g font-family="JetBrains Mono" font-size="9" fill="#7E776E">
+                    <text x="30" y="165" text-anchor="end">$0</text>
+                    <text x="30" y="130" text-anchor="end">$40</text>
+                    <text x="30" y="95" text-anchor="end">$80</text>
+                    <text x="30" y="60" text-anchor="end">$120</text>
+                    <text x="45" y="178" text-anchor="middle">M1</text>
+                    <text x="105" y="178" text-anchor="middle">M3</text>
+                    <text x="165" y="178" text-anchor="middle">M6</text>
+                    <text x="225" y="178" text-anchor="middle">M9</text>
+                    <text x="285" y="178" text-anchor="middle">M12</text>
+                  </g>
+                  <g font-family="JetBrains Mono" font-size="8" fill="#4A4540">
+                    <line x1="180" y1="28" x2="200" y2="28" stroke="#3E2B70" stroke-width="2"/>
+                    <text x="206" y="31">observed</text>
+                    <line x1="248" y1="28" x2="268" y2="28" stroke="#C9651F" stroke-width="2" stroke-dasharray="3 2"/>
+                    <text x="273" y="31">predicted</text>
+                  </g>
+                </svg>
+              </div>
+              <div class="ppane" id="p2-cohort">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>cohort retention</span><span>12 mo</span></div>
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+                  <g font-family="JetBrains Mono" font-size="8" fill="#7E776E">
+                    <text x="48" y="36" text-anchor="end">Jan</text>
+                    <text x="48" y="56" text-anchor="end">Feb</text>
+                    <text x="48" y="76" text-anchor="end">Mar</text>
+                    <text x="48" y="96" text-anchor="end">Apr</text>
+                    <text x="48" y="116" text-anchor="end">May</text>
+                    <text x="48" y="136" text-anchor="end">Jun</text>
+                    <text x="48" y="156" text-anchor="end">Jul</text>
+                  </g>
+                  <g font-family="JetBrains Mono" font-size="8" fill="#7E776E" text-anchor="middle">
+                    <text x="68" y="16">M0</text><text x="100" y="16">M1</text>
+                    <text x="132" y="16">M2</text><text x="164" y="16">M3</text>
+                    <text x="196" y="16">M4</text><text x="228" y="16">M5</text>
+                    <text x="260" y="16">M6</text>
+                  </g>
+                  <g>
+                    <rect x="55" y="25" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                    <rect x="84" y="25" width="26" height="16" fill="#3E2B70" opacity="0.72"/>
+                    <rect x="113" y="25" width="26" height="16" fill="#3E2B70" opacity="0.55"/>
+                    <rect x="142" y="25" width="26" height="16" fill="#3E2B70" opacity="0.42"/>
+                    <rect x="171" y="25" width="26" height="16" fill="#3E2B70" opacity="0.35"/>
+                    <rect x="200" y="25" width="26" height="16" fill="#3E2B70" opacity="0.30"/>
+                    <rect x="229" y="25" width="26" height="16" fill="#3E2B70" opacity="0.28"/>
+                  </g>
+                  <g>
+                    <rect x="55" y="45" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                    <rect x="84" y="45" width="26" height="16" fill="#3E2B70" opacity="0.68"/>
+                    <rect x="113" y="45" width="26" height="16" fill="#3E2B70" opacity="0.50"/>
+                    <rect x="142" y="45" width="26" height="16" fill="#3E2B70" opacity="0.40"/>
+                    <rect x="171" y="45" width="26" height="16" fill="#3E2B70" opacity="0.34"/>
+                    <rect x="200" y="45" width="26" height="16" fill="#3E2B70" opacity="0.28"/>
+                  </g>
+                  <g>
+                    <rect x="55" y="65" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                    <rect x="84" y="65" width="26" height="16" fill="#3E2B70" opacity="0.74"/>
+                    <rect x="113" y="65" width="26" height="16" fill="#3E2B70" opacity="0.58"/>
+                    <rect x="142" y="65" width="26" height="16" fill="#3E2B70" opacity="0.45"/>
+                    <rect x="171" y="65" width="26" height="16" fill="#3E2B70" opacity="0.38"/>
+                  </g>
+                  <g>
+                    <rect x="55" y="85" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                    <rect x="84" y="85" width="26" height="16" fill="#3E2B70" opacity="0.76"/>
+                    <rect x="113" y="85" width="26" height="16" fill="#3E2B70" opacity="0.62"/>
+                    <rect x="142" y="85" width="26" height="16" fill="#3E2B70" opacity="0.50"/>
+                  </g>
+                  <g>
+                    <rect x="55" y="105" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                    <rect x="84" y="105" width="26" height="16" fill="#3E2B70" opacity="0.80"/>
+                    <rect x="113" y="105" width="26" height="16" fill="#3E2B70" opacity="0.66"/>
+                  </g>
+                  <g>
+                    <rect x="55" y="125" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                    <rect x="84" y="125" width="26" height="16" fill="#3E2B70" opacity="0.83"/>
+                  </g>
+                  <g>
+                    <rect x="55" y="145" width="26" height="16" fill="#3E2B70" opacity="1"/>
+                  </g>
+                  <g font-family="JetBrains Mono" font-size="8" fill="#4A4540">
+                    <text x="55" y="183">retention →</text>
+                    <rect x="110" y="176" width="14" height="8" fill="#3E2B70" opacity="0.25"/>
+                    <rect x="124" y="176" width="14" height="8" fill="#3E2B70" opacity="0.5"/>
+                    <rect x="138" y="176" width="14" height="8" fill="#3E2B70" opacity="0.75"/>
+                    <rect x="152" y="176" width="14" height="8" fill="#3E2B70" opacity="1"/>
+                    <text x="171" y="183">low → high</text>
+                  </g>
+                </svg>
+              </div>
+              <div class="ppane" id="p2-attr">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>attribution mix</span><span>multi-touch</span></div>
+                <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+                  <g font-family="JetBrains Mono" font-size="9" fill="#4A4540">
+                    <text x="90" y="36" text-anchor="end">Paid Search</text>
+                    <text x="90" y="62" text-anchor="end">Direct</text>
+                    <text x="90" y="88" text-anchor="end">Organic</text>
+                    <text x="90" y="114" text-anchor="end">Email</text>
+                    <text x="90" y="140" text-anchor="end">Referral</text>
+                    <text x="90" y="166" text-anchor="end">Social</text>
+                  </g>
+                  <g><rect x="95" y="26" width="60" height="14" fill="#3E2B70"/><rect x="155" y="26" width="36" height="14" fill="#5B3FA8"/><rect x="191" y="26" width="24" height="14" fill="#8B79C2"/><text x="220" y="36" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$48k</text></g>
+                  <g><rect x="95" y="52" width="46" height="14" fill="#3E2B70"/><rect x="141" y="52" width="32" height="14" fill="#5B3FA8"/><rect x="173" y="52" width="20" height="14" fill="#8B79C2"/><text x="198" y="62" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$39k</text></g>
+                  <g><rect x="95" y="78" width="42" height="14" fill="#3E2B70"/><rect x="137" y="78" width="28" height="14" fill="#5B3FA8"/><rect x="165" y="78" width="22" height="14" fill="#8B79C2"/><text x="192" y="88" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$36k</text></g>
+                  <g><rect x="95" y="104" width="20" height="14" fill="#3E2B70"/><rect x="115" y="104" width="38" height="14" fill="#5B3FA8"/><rect x="153" y="104" width="14" height="14" fill="#8B79C2"/><text x="172" y="114" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$24k</text></g>
+                  <g><rect x="95" y="130" width="28" height="14" fill="#3E2B70"/><rect x="123" y="130" width="20" height="14" fill="#5B3FA8"/><rect x="143" y="130" width="14" height="14" fill="#8B79C2"/><text x="162" y="140" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$18k</text></g>
+                  <g><rect x="95" y="156" width="14" height="14" fill="#3E2B70"/><rect x="109" y="156" width="22" height="14" fill="#5B3FA8"/><rect x="131" y="156" width="10" height="14" fill="#8B79C2"/><text x="146" y="166" font-family="JetBrains Mono" font-size="9" fill="#7E776E">$12k</text></g>
+                  <g font-family="JetBrains Mono" font-size="8" fill="#4A4540">
+                    <rect x="95" y="183" width="10" height="7" fill="#3E2B70"/><text x="108" y="190">first</text>
+                    <rect x="130" y="183" width="10" height="7" fill="#5B3FA8"/><text x="143" y="190">mid</text>
+                    <rect x="167" y="183" width="10" height="7" fill="#8B79C2"/><text x="180" y="190">last</text>
+                  </g>
+                </svg>
+              </div>
             </div>
           </article>
 
           <article class="proj reveal">
             <div>
               <div class="proj-head">
-                <div>
-                  <div class="proj-id">project_03</div>
-                  <h3>LLM-Augmented Analytics Workflow</h3>
-                </div>
+                <div><div class="proj-id">project_03</div><h3>LLM-Augmented Analytics Workflow</h3></div>
                 <span class="status planning">Planning</span>
               </div>
               <p class="desc">An AI tool that <em>knows your semantic layer</em>. RAG over warehouse metadata, dbt exposures, and column-level lineage to answer natural-language questions with semantic-layer-grounded SQL — and flag when the question can't be answered cleanly by the existing model. The version of "talk to your data" that doesn't hallucinate metrics.</p>
               <div class="proj-tags">
                 <span class="tag">Python</span><span class="tag">OpenAI</span><span class="tag">pgvector</span><span class="tag">RAG</span><span class="tag">dbt metadata</span>
               </div>
-              <div class="proj-links">
-                <a class="disabled">github →</a>
-                <a class="disabled">case study →</a>
-              </div>
+              <div class="proj-links"><a class="disabled">github →</a><a class="disabled">case study →</a></div>
             </div>
-            <div class="proj-preview">
-              <div class="proj-preview-head"><span>grounded query · preview</span><span>RAG</span></div>
-              <div class="preview-body">
-                <div class="msg user">What was Q3 ARR for top-10 accounts by industry?</div>
-                <div class="msg ai">
-                  Pulling from <strong>marts.fct_account_revenue</strong> joined with <strong>dim_accounts</strong>. Grouping by industry, ranking by Q3 ARR, limiting to top 10.
-                  <span class="src">↳ exposure: ae_account_revenue · 14 tests passed</span>
+            <div class="proj-preview" data-proj="p3">
+              <div class="proj-tabs">
+                <button class="ptab active" data-target="p3-chat">chat</button>
+                <button class="ptab" data-target="p3-context">context</button>
+                <button class="ptab" data-target="p3-sql">grounded SQL</button>
+              </div>
+              <div class="ppane active" id="p3-chat">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>conversation</span><span>RAG</span></div>
+                <div class="preview-body">
+                  <div class="msg user">Q3 ARR for top-10 accounts by industry?</div>
+                  <div class="msg ai">
+                    Pulling <strong>marts.fct_account_revenue</strong> joined to <strong>dim_accounts</strong>. Grouped by industry, ranked by Q3 ARR, top 10.
+                    <span class="src">↳ exposure: ae_account_revenue · 14 tests passing</span>
+                  </div>
+                  <div class="msg user">Only ones with a stalled opp.</div>
+                  <div class="msg ai">
+                    Filtering <strong>opportunities.last_activity_at &lt; now() − 30d</strong> and stage NOT IN (closed_won, closed_lost).
+                    <span class="src">↳ semantic: stalled_opp_count (dbt metric)</span>
+                  </div>
                 </div>
-                <div class="msg user">Now show only ones with a stalled opp.</div>
-                <div class="msg ai">
-                  Filtering on <strong>opportunities.last_activity_at &lt; now() - 30d</strong> and stage NOT IN ('closed_won', 'closed_lost').
-                  <span class="src">↳ semantic: stalled_opportunity (dbt metric)</span>
+              </div>
+              <div class="ppane" id="p3-context">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>retrieval · top-k</span><span>cos sim</span></div>
+                <div class="ctx-list">
+                  <div class="ctx-row"><span><span class="nm">marts.fct_account_revenue</span> <span class="typ">mart</span></span><span class="sc">0.94</span></div>
+                  <div class="ctx-row"><span><span class="nm">marts.dim_accounts</span> <span class="typ">dim</span></span><span class="sc">0.91</span></div>
+                  <div class="ctx-row"><span><span class="nm">metrics.stalled_opp_count</span> <span class="typ">metric</span></span><span class="sc">0.88</span></div>
+                  <div class="ctx-row"><span><span class="nm">marts.fct_opportunities</span> <span class="typ">mart</span></span><span class="sc">0.84</span></div>
+                  <div class="ctx-row"><span><span class="nm">exposures.gtm_dashboard</span> <span class="typ">exposure</span></span><span class="sc">0.79</span></div>
+                  <div class="ctx-row"><span><span class="nm">int_accounts__activity</span> <span class="typ">int</span></span><span class="sc">0.71</span></div>
+                </div>
+              </div>
+              <div class="ppane" id="p3-sql">
+                <div class="proj-preview-head" style="border:none;background:none;padding:0 0 0.4rem 0;"><span>generated SQL</span><span>compiled</span></div>
+                <div class="ground-pane">
+                  <div class="label">grounded from</div>
+                  <span style="color: var(--accent);">marts.fct_account_revenue</span> · <span style="color: var(--accent);">dim_accounts</span>
+                  <div class="label">generated query</div>
+<pre class="code" style="padding: 0.45rem 0; font-size: 0.7rem;"><span class="tok-kw">SELECT</span>
+  d.industry,
+  <span class="tok-fn">SUM</span>(r.arr_usd) <span class="tok-kw">AS</span> q3_arr
+<span class="tok-kw">FROM</span> {{ <span class="tok-fn">ref</span>(<span class="tok-str">'fct_account_revenue'</span>) }} r
+<span class="tok-kw">JOIN</span> {{ <span class="tok-fn">ref</span>(<span class="tok-str">'dim_accounts'</span>) }} d
+  <span class="tok-kw">USING</span> (account_id)
+<span class="tok-kw">WHERE</span> r.fiscal_quarter <span class="tok-fn">=</span> <span class="tok-str">'2026Q3'</span>
+<span class="tok-kw">GROUP BY</span> <span class="tok-num">1</span>
+<span class="tok-kw">ORDER BY</span> <span class="tok-num">2</span> <span class="tok-kw">DESC</span>
+<span class="tok-kw">LIMIT</span> <span class="tok-num">10</span></pre>
                 </div>
               </div>
             </div>
@@ -967,9 +2256,10 @@
       </div>
     </section>
 
+    <!-- CONTACT -->
     <section class="contact" id="contact">
       <div class="wrap">
-        <div class="cell-label reveal"><span class="num">[04]</span><span>contact</span><span class="rule"></span></div>
+        <div class="cell-label reveal"><span class="num">[05]</span><span>contact</span><span class="rule"></span></div>
         <div class="contact-grid">
           <div class="reveal d1">
             <h2>Open to <span class="em">analytics engineering</span> work.</h2>
@@ -996,12 +2286,38 @@
 
   <footer>
     <div class="wrap">
-      <span>© 2026 Xander Bennett — Salt Lake City, UT</span>
-      <span class="build">last deploy · main@2026.05 · 14 tests passed</span>
+      <div class="footer-grid">
+        <div class="footer-info">
+          <span class="meta">© 2026 Xander Bennett — Salt Lake City, UT</span>
+          <span>built single-file · vanilla HTML, CSS, JS · no build step</span>
+          <span>typeset in Fraunces · IBM Plex Sans · JetBrains Mono</span>
+        </div>
+        <div class="footer-log">
+          <div class="log-head">recent deploys</div>
+          <div class="log-row"><span class="ts">2026-05-27</span><span class="ev">deploy</span><span class="msg-t">Hex notebook specimen · mobile responsive pass</span></div>
+          <div class="log-row"><span class="ts">2026-05-27</span><span class="ev">deploy</span><span class="msg-t">column-level lineage + PR diff specimens</span></div>
+          <div class="log-row"><span class="ts">2026-05-27</span><span class="ev">deploy</span><span class="msg-t">field notes section + tabbed previews</span></div>
+          <div class="log-row"><span class="ts">2026-05-26</span><span class="ev info">test</span><span class="msg-t">14 dbt tests passing</span></div>
+          <div class="log-row"><span class="ts">2026-05-26</span><span class="ev info">freshness</span><span class="msg-t">∼47m on critical sources</span></div>
+        </div>
+      </div>
     </div>
   </footer>
 
   <script>
+    (function() {
+      const bar = document.getElementById('scrollProgress');
+      if (!bar) return;
+      const onScroll = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
     (function() {
       const hero = document.getElementById('hero');
       const glow = document.getElementById('cursorGlow');
@@ -1017,21 +2333,90 @@
     })();
 
     (function() {
+      const cell = document.getElementById('heroCell');
+      const hero = document.getElementById('hero');
+      if (!cell || !hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      hero.addEventListener('mousemove', (e) => {
+        const r = hero.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        cell.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
+      });
+      hero.addEventListener('mouseleave', () => { cell.style.transform = ''; });
+    })();
+
+    (function() {
       const n = document.getElementById('topnav');
       const onScroll = () => { n.classList.toggle('scrolled', window.scrollY > 8); };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
     })();
 
+    // Active nav + section TOC indicator
     (function() {
-      const tabs = document.querySelectorAll('.tab');
+      const sections = ['hero','work','notes','stack','projects','contact'];
+      const navLinks = Array.from(document.querySelectorAll('nav .links a'));
+      const tocLinks = Array.from(document.querySelectorAll('.section-toc .stoc'));
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            const id = en.target.id;
+            navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+            tocLinks.forEach(t => t.classList.toggle('active', t.getAttribute('data-section') === id));
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) obs.observe(el);
+      });
+    })();
+
+    // Compile-time ticker
+    (function() {
+      const tk = document.getElementById('ticker');
+      if (!tk) return;
+      let secs = 47;
+      setInterval(() => {
+        secs += 3;
+        if (secs < 60) tk.textContent = `refreshed ${secs}s ago`;
+        else if (secs < 3600) tk.textContent = `refreshed ${Math.floor(secs/60)}m ago`;
+        else tk.textContent = `refreshed ${Math.floor(secs/3600)}h ago`;
+      }, 3000);
+    })();
+
+    (function() {
+      const tabs = document.querySelectorAll('.tabs .tab');
+      const badge = document.getElementById('heroBadge');
       tabs.forEach(t => {
         t.addEventListener('click', () => {
           const pane = t.getAttribute('data-pane');
+          const newBadge = t.getAttribute('data-badge');
           tabs.forEach(x => x.classList.remove('active'));
-          document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+          document.querySelectorAll('.panes .pane').forEach(p => p.classList.remove('active'));
           t.classList.add('active');
           document.getElementById('pane-' + pane).classList.add('active');
+          if (badge && newBadge) {
+            badge.style.opacity = '0';
+            setTimeout(() => { badge.textContent = newBadge; badge.style.opacity = '1'; }, 140);
+          }
+        });
+      });
+    })();
+
+    (function() {
+      document.querySelectorAll('.proj-preview').forEach(preview => {
+        const tabs = preview.querySelectorAll('.ptab');
+        const panes = preview.querySelectorAll('.ppane');
+        tabs.forEach(t => {
+          t.addEventListener('click', () => {
+            const target = t.getAttribute('data-target');
+            tabs.forEach(x => x.classList.remove('active'));
+            panes.forEach(p => p.classList.remove('active'));
+            t.classList.add('active');
+            const targetPane = preview.querySelector('#' + target);
+            if (targetPane) targetPane.classList.add('active');
+          });
         });
       });
     })();
