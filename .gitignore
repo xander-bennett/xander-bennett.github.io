@@ -4,3 +4,6 @@
 # Sibling project repos developed in this workspace — pushed separately,
 # never committed to the site repo
 gtm-semantic-layer/
+
+# Cowork output copies, never committed
+Claude outputs/
