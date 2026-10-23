@@ -2,7 +2,7 @@
 
 Portfolio of **Xander Bennett**, AI engineer in Salt Lake City. Live at **[xander-bennett.com](https://xander-bennett.com)**.
 
-I build AI systems that answer questions about company data, check their own answers, and get tested before anyone relies on them. The site makes that case by following one question through the agent loop of my flagship project, [grounded-sql-agent](https://github.com/xander-bennett/grounded-sql-agent): a text-to-SQL agent grounded in dbt metadata, validated before execution, and gated by evals in CI.
+I build AI systems that answer questions about company data, check their own answers, and get tested before anyone relies on them. The site makes that case by following one question through the agent loop of my flagship project, grounded-sql-agent: a text-to-SQL agent grounded in dbt metadata, validated before execution, and gated by evals in CI.
 
 Open to full-time AI engineering roles, Salt Lake City or remote.
 [Résumé](https://xander-bennett.com/assets/Alexander_Bennett_Resume.pdf) · [LinkedIn](https://linkedin.com/in/xander-bennett) · [xanderwbennett@gmail.com](mailto:xanderwbennett@gmail.com)
@@ -24,7 +24,7 @@ One question enters at the top of the page: *"Which job families have the most L
 
 ## Status
 
-grounded-sql-agent is in progress, and the site says so. The scaffold is complete. The first green eval run and the first committed baseline (`evals/baseline.json`) are the next milestones. The v1 targets were written down before any measured numbers exist:
+grounded-sql-agent is in progress, and the site says so. The first green eval run and the first committed baseline (`evals/baseline.json`) are the next milestones, and the source goes public with that first baseline. The v1 targets were written down before any measured numbers exist:
 
 | Metric | v1 target |
 |---|---|
@@ -40,11 +40,11 @@ Panels on the page that show illustrative data are labeled `example`. Measured n
 
 | Project | What it does | Status |
 |---|---|---|
-| [grounded-sql-agent](https://github.com/xander-bennett/grounded-sql-agent) | Plain-English questions to validated, cited SQL over a dbt-documented warehouse | In progress |
+| grounded-sql-agent | Plain-English questions to validated, cited SQL over a dbt-documented warehouse | In progress |
 | schema-mapper | Maps messy customer spreadsheet columns onto a standard schema. Confident matches pass through, uncertain ones queue for human review, and every correction becomes a labeled example. | Queued |
 | regression-gate | Re-tests an AI feature on every change, diffs results against the previous version, and blocks the release when quality drops | Queued |
 
-Queued projects get public repos once they have code.
+Each project goes public once it has a committed baseline.
 
 ## How the site is built
 
